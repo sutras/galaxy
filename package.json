@@ -1,7 +1,7 @@
 {
   "name": "galaxy",
   "version": "0.1.0",
-  "description": "解决PC端大部分网页特效的库",
+  "description": "Galaxy是一个与样式弱关联的解决网站绝大部分动效的js库。",
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
