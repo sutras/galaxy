@@ -1,0 +1,36 @@
+{
+  "name": "galaxy",
+  "version": "0.1.0",
+  "description": "解决PC端大部分网页特效的库",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sutras/galaxy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sutras/galaxy/issues"
+  },
+  "homepage": "https://github.com/sutras/galaxy#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "vivid": "github:sutras/vivid"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-node-resolve": "^11.1.0",
+    "gulp": "^4.0.2",
+    "gulp-header": "^2.0.9",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "rollup": "^2.34.2",
+    "terser": "^5.5.1"
+  }
+}

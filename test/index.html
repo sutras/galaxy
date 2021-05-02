@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>galaxy</title>
+  <link rel="stylesheet" href="./css/main.css">
+  <script type="text/javascript" src="../dist/galaxy.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        轮播图
+      </div>
+      <div class="card-body">
+        <div class="carousel" id="carousel1">
+          <ul class="carousel-wrapper">
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a01.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a02.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a03.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a04.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a05.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a06.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a07.jpg" /></a></li>
+            <li class="carousel-slide"><a href="javascript:;"><img src="images/a08.jpg" /></a></li>
+          </ul>
+          <div class="carousel-pagination"></div>
+          <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+          <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var carousel1 = new galaxy.Carousel('#carousel1', {
+        wrapper: '.carousel-wrapper',
+        // instant: false,
+        duration: 1000,
+        effect: 'deck',
+        resize: true,
+        effectSlide: {
+          loop: true,
+          // visibleSlides: 2
+        },
+        effectFade: {
+          // fadeOutDuration: 0
+        },
+        easing: 'easeInOutQuad',
+        // direction: 'vertical',
+        effectDeck: {
+          type: 'cover',
+          prevEasing: 'easeInOutQuad',
+          nextEasing: 'easeOutBounce',
+          nextDuration: 2000
+        },
+        navigation: {
+          prevEl: '.carousel-prev',
+          nextEl: '.carousel-next',
+          // disabledIfEdge: true
+        },
+        autoplay: true,
+        pagination: {
+          el: '.carousel-pagination',
+          bulletActiveClass: 'active'
+        }
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">
+        堆叠轮播
+      </div>
+      <div class="card-body">
+        <div class="stack" id="stack1">
+          <div class="stack-wrapper">
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a01.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a02.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a03.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a04.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a05.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a06.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a07.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a08.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a09.jpg" /></a></div>
+          </div>
+          <div class="carousel-pagination"></div>
+          <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+          <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var stack1 = new galaxy.Carousel('#stack1', {
+        wrapper: '.stack-wrapper',
+        // instant: false,
+        // duration: 1000,
+        resize: true,
+        effect: 'stack',
+        effectStack: {
+          loop: false,
+          layer: 3,
+          scale: -.12,
+          changeZIndex: 'after',
+          // scaleEasing: 'linear',
+          align: 'end',
+          // offsetEasing: 'linear'
+        },
+        // easing: 'easeOutQuad',
+        // duration: 500,
+        // activeIndex: 2,
+        autoplay: true,
+        pagination: {
+          // el: '.stack-wrapper',
+          // autoPaging: false,
+          // bulletEl: '.stack-slide:not(.galaxy-clone-slide)',
+          el: '.carousel-pagination',
+          bulletActiveClass: 'active'
+        },
+        navigation: {
+          prevEl: '.carousel-prev',
+          nextEl: '.carousel-next',
+          // disabledIfEdge: true
+        },
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">
+        堆叠轮播 - 垂直
+      </div>
+      <div class="card-body">
+        <div class="stack stack-vertical" id="stack2">
+          <div class="stack-wrapper">
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a01.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a02.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a03.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a04.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a05.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a06.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a07.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a08.jpg" /></a></div>
+            <div class="stack-slide"><a href="javascript:;"><img src="images/a09.jpg" /></a></div>
+          </div>
+          <div class="carousel-pagination"></div>
+          <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+          <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var stack2 = new galaxy.Carousel('#stack2', {
+        wrapper: '.stack-wrapper',
+        instant: false,
+        effect: 'stack',
+        direction: 'vertical',
+        effectStack: {
+          layer: 3,
+          scale: -.12,
+          changeZIndex: 'after',
+          align: 'center',
+        },
+        activeIndex: 2,
+        navigation: {
+          prevEl: '.carousel-prev',
+          nextEl: '.carousel-next',
+        },
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">手风琴 - 水平</div>
+      <div class="card-body">
+        <div class="com1" id="accordion2"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      (function () {
+        var num = 17;
+        var docFrag = document.createDocumentFragment();
+        for (var i = 1; i <= num; i++) {
+          var div = document.createElement('div');
+          div.className = 'com1-item';
+          div.innerHTML = '<div class="com1-preview"><img src="./images/op' + i + '.jpg" alt=""><span class="com1-preview-mask"></span></div>'
+            + '<div class="com1-view"><img src="./images/op' + i + '.jpg" alt=""></div>';
+          docFrag.appendChild(div);
+        }
+        document.getElementById('accordion2').appendChild(docFrag);
+      })();
+    </script>
+
+    <script type="text/javascript">
+      var carousel = new galaxy.Accordion('#accordion2', {
+        labels: '.com1-preview',
+        panels: '.com1-view',
+        direction: 'horizontal'
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">手风琴 - 垂直</div>
+      <div class="card-body">
+        <div class="accordion" id="accordion1">
+          <div class="accordion-item">
+            <div class="accordion-header"><span class="arrow"></span> 水浒传</div>
+            <div class="accordion-content">
+              《水浒传》是元末明初施耐庵（现存刊本署名大多有施耐庵、罗贯中两人中的一人，或两人皆有）编著的章回体长篇小说。
+              《水浒传》主要描写的是北宋末年，以宋江为首的一百零八条好汉在山东梁山泊聚义的故事。
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header"><span class="arrow"></span> 三国演义</div>
+            <div class="accordion-content">
+              《三国演义》（全名为《三国志通俗演义》，又称《三国志演义》）是元末明初小说家罗贯中根据陈寿《三国志》和裴松之注解以及民间三国故事传说经过艺术加工创作而成的长篇章回体历史演义小说，与《西游记》《水浒传》《红楼梦》并称为中国古典四大名著。该作品成书后有嘉靖壬午本等多个版本传于世，到了明末清初，毛宗岗对《三国演义》整顿回目、修正文辞、改换诗文，该版本也成为诸多版本中水平最高、流传最广的版本。
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header"><span class="arrow"></span> 西游记</div>
+            <div class="accordion-content">
+              《西游记》是中国古代第一部浪漫主义章回体长篇神魔小说。现存明刊百回本《西游记》均无作者署名。清代学者吴玉搢等首先提出《西游记》作者是明代吴承恩。
+              全书主要描写了唐僧师徒五人经历九九八十一难去西天取得真经的故事。该小说以“唐僧取经”这一历史事件为蓝本，通过作者的艺术加工，深刻地描绘了明代社会现实。
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header"><span class="arrow"></span> 红楼梦</div>
+            <div class="accordion-content">
+              《红楼梦》，中国古代章回体长篇小说，中国古典四大名著之一，一般认为是清代作家曹雪芹所著。小说以贾、史、王、薛四大家族的兴衰为背景，以富贵公子贾宝玉为视角，以贾宝玉与林黛玉、薛宝钗的爱情婚姻悲剧为主线，描绘了一批举止见识出于须眉之上的闺阁佳人的人生百态，展现了真正的人性美和悲剧美，可以说是一部从各个角度展现女性美以及中国古代社会世态百相的史诗性著作。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var carousel = new galaxy.Accordion('#accordion1', {
+        labels: '.accordion-header',
+        panels: '.accordion-content',
+        // atLeastOne: false,
+        multiple: true,
+        // duration: 2000,
+        activeIndex: 2
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">选项卡/标签页</div>
+      <div class="card-body">
+        <div class="tabs" id="tabs1">
+          <div class="tabs-header">
+            <div class="tabs-label">水浒传</div>
+            <div class="tabs-label">三国演义</div>
+            <div class="tabs-label">西游记</div>
+            <div class="tabs-label">红楼梦</div>
+          </div>
+          <div class="tabs-body">
+            <div class="tabs-panel">
+              《水浒传》是元末明初施耐庵（现存刊本署名大多有施耐庵、罗贯中两人中的一人，或两人皆有）编著的章回体长篇小说。
+              《水浒传》主要描写的是北宋末年，以宋江为首的一百零八条好汉在山东梁山泊聚义的故事。
+            </div>
+            <div class="tabs-panel">
+              《三国演义》（全名为《三国志通俗演义》，又称《三国志演义》）是元末明初小说家罗贯中根据陈寿《三国志》和裴松之注解以及民间三国故事传说经过艺术加工创作而成的长篇章回体历史演义小说，与《西游记》《水浒传》《红楼梦》并称为中国古典四大名著。该作品成书后有嘉靖壬午本等多个版本传于世，到了明末清初，毛宗岗对《三国演义》整顿回目、修正文辞、改换诗文，该版本也成为诸多版本中水平最高、流传最广的版本。
+            </div>
+            <div class="tabs-panel">
+              《西游记》是中国古代第一部浪漫主义章回体长篇神魔小说。现存明刊百回本《西游记》均无作者署名。清代学者吴玉搢等首先提出《西游记》作者是明代吴承恩。
+              全书主要描写了唐僧师徒五人经历九九八十一难去西天取得真经的故事。该小说以“唐僧取经”这一历史事件为蓝本，通过作者的艺术加工，深刻地描绘了明代社会现实。
+            </div>
+            <div class="tabs-panel">
+              《红楼梦》，中国古代章回体长篇小说，中国古典四大名著之一，一般认为是清代作家曹雪芹所著。小说以贾、史、王、薛四大家族的兴衰为背景，以富贵公子贾宝玉为视角，以贾宝玉与林黛玉、薛宝钗的爱情婚姻悲剧为主线，描绘了一批举止见识出于须眉之上的闺阁佳人的人生百态，展现了真正的人性美和悲剧美，可以说是一部从各个角度展现女性美以及中国古代社会世态百相的史诗性著作。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var carousel = new galaxy.Tabs('#tabs1', {
+        labels: '.tabs-label',
+        panels: '.tabs-panel',
+        triggerType: 'mouseenter'
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">跑马灯</div>
+      <div class="card-body">
+        <div class="com2" id="marquee1">
+          <div class="com2-header">
+            <div class="com2-title">中奖用户</div>
+            <div class="com2-header-extra">
+              <a href="javascript:;" class="com2-prev"><span class="arrow"></span></a>
+              <a href="javascript:;" class="com2-next"><span class="arrow"></span></a>
+            </div>
+          </div>
+          <div class="com2-body">
+            <ul class="gen-data"></ul>
+          </div>
+        </div>
+        <div class="com2 com2-horizontal" id="marquee2">
+          <div class="com2-header">
+            <div class="com2-title">中奖用户</div>
+            <div class="com2-header-extra">
+              <a href="javascript:;" class="com2-prev"><span class="arrow"></span></a>
+              <a href="javascript:;" class="com2-next"><span class="arrow"></span></a>
+            </div>
+          </div>
+          <div class="com2-body">
+            <ul class="gen-data"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      (function () {
+        var num = 10;
+        var surname = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王'];
+        var sex = ['先生', '女士'];
+        var awards = ['一等奖', '二等奖', '三等奖', '特等奖'];
+
+        function random(min, max) {
+          return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        function randomArr(arr) {
+          return arr[random(0, arr.length - 1)];
+        }
+        function randomWord() {
+          return '恭喜'
+            + randomArr(surname) + randomArr(sex)
+            + '，抽中了'
+            + randomArr(awards);
+        }
+
+        [].slice.call(document.querySelectorAll('.gen-data')).forEach(function (wrapper) {
+          for (var i = 0; i < num; i++) {
+            var li = document.createElement('li');
+            li.innerHTML = randomWord();
+            wrapper.appendChild(li);
+          }
+        });
+      })();
+    </script>
+
+    <script type="text/javascript">
+      var marquee1 = new galaxy.Marquee('#marquee1', {
+        wrapper: '.com2-body ul',
+        navigation: {
+          prevEl: '.com2-prev',
+          nextEl: '.com2-next'
+        }
+      });
+      var marquee2 = new galaxy.Marquee('#marquee2', {
+        wrapper: '.com2-body ul',
+        direction: 'horizontal',
+        navigation: {
+          prevEl: '.com2-prev',
+          nextEl: '.com2-next'
+        }
+      });
+    </script>
+
+
+    <div class="gototop" id="gotoTop">
+      <div class="arrow"></div>
+    </div>
+    <script type="text/javascript">
+      var gotoTop1 = new galaxy.GotoTop('#gotoTop', {
+        // init: false
+        // duration: 2000,
+        // fadeDuration: 600
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">滚动监听 + 滚动固定</div>
+      <div class="card-body">
+        <div class="com3" id="scrollSpy1">
+          <div class="com3-header" id="scrollFixed1">
+            <div class="com3-nav">
+              <a class="com3-nav-item" href="#scrollspy-target1">水浒传</a>
+              <a class="com3-nav-item" href="#scrollspy-target2">三国演义</a>
+              <a class="com3-nav-item" href="#scrollspy-target3">西游记</a>
+              <a class="com3-nav-item" href="#scrollspy-target4">红楼梦</a>
+            </div>
+          </div>
+          <div class="com3-body">
+            <div class="com3-panel">
+              <h4 class="com3-panel-header" id="scrollspy-target1">水浒传</h4>
+              <div class="com3-panel-body">
+                <p>《水浒传》是元末明初施耐庵（现存刊本署名大多有施耐庵、罗贯中两人中的一人，或两人皆有）编著的章回体长篇小说。</p>
+                <p>
+                  全书通过描写梁山好汉反抗欺压、水泊梁山壮大和受宋朝招安，以及受招安后为宋朝征战，最终消亡的宏大故事，艺术地反映了中国历史上宋江起义从发生、发展直至失败的全过程，深刻揭示了起义的社会根源，满腔热情地歌颂了起义英雄的反抗斗争和他们的社会理想，也具体揭示了起义失败的内在历史原因。
+                </p>
+                <p>
+                  《水浒传》是中国古典四大名著之一，问世后，在社会上产生了巨大的影响，成了后世中国小说创作的典范。《水浒传》是中国历史上最早用白话文写成的章回小说之一，流传极广，脍炙人口；同时也是汉语言文学中具备史诗特征的作品之一，对中国乃至东亚的叙事文学都有深远的影响。
+                </p>
+              </div>
+            </div>
+            <div class="com3-panel">
+              <h4 class="com3-panel-header" id="scrollspy-target2">三国演义</h4>
+              <div class="com3-panel-body">
+                <p>
+                  《三国演义》（全名为《三国志通俗演义》，又称《三国志演义》）是元末明初小说家罗贯中根据陈寿《三国志》和裴松之注解以及民间三国故事传说经过艺术加工创作而成的长篇章回体历史演义小说，与《西游记》《水浒传》《红楼梦》并称为中国古典四大名著。该作品成书后有嘉靖壬午本等多个版本传于世，到了明末清初，毛宗岗对《三国演义》整顿回目、修正文辞、改换诗文，该版本也成为诸多版本中水平最高、流传最广的版本。
+                </p>
+                <p>
+                  《三国演义》可大致分为黄巾起义、董卓之乱、群雄逐鹿、三国鼎立、三国归晋五大部分，描写了从东汉末年到西晋初年之间近百年的历史风云，以描写战争为主，诉说了东汉末年的群雄割据混战和魏、蜀、吴三国之间的政治和军事斗争，最终司马炎一统三国，建立晋朝的故事。反映了三国时代各类社会斗争与矛盾的转化，并概括了这一时代的历史巨变，塑造了一群叱咤风云的三国英雄人物。
+                </p>
+                <p>《三国演义》是中国文学史上第一部章回小说，是历史演义小说的开山之作，也是第一部文人长篇小说，被列为中国古典四大名著和六大名著之一。明清时期甚至有“第一才子书”之称。</p>
+              </div>
+            </div>
+            <div class="com3-panel">
+              <h4 class="com3-panel-header" id="scrollspy-target3">西游记</h4>
+              <div class="com3-panel-body">
+                <p>
+                  《西游记》是中国神魔小说的经典之作，达到了古代长篇浪漫主义小说的巅峰，与《三国演义》《水浒传》《红楼梦》并称为中国古典四大名著。《西游记》自问世以来在民间广为流传，各式各样的版本层出不穷，明代刊本有六种，清代刊本、抄本也有七种，典籍所记已佚版本十三种。鸦片战争以后，大量中国古典文学作品被译为西文，《西游记》渐渐传入欧美，被译为英、法、德、意、西、手语、世（世界语）、斯（斯瓦西里语）、俄、捷、罗、波、日、朝、越等语言。
+                </p>
+                <p>《西游记》是中国古代第一部浪漫主义章回体长篇神魔小说。现存明刊百回本《西游记》均无作者署名。清代学者吴玉搢等首先提出《西游记》作者是明代吴承恩。</p>
+                <p>全书主要描写了唐僧师徒五人经历九九八十一难去西天取得真经的故事。该小说以“唐僧取经”这一历史事件为蓝本，通过作者的艺术加工，深刻地描绘了明代社会现实。</p>
+              </div>
+            </div>
+            <div class="com3-panel">
+              <h4 class="com3-panel-header" id="scrollspy-target4">红楼梦</h4>
+              <div class="com3-panel-body">
+                <p>
+                  《红楼梦》，中国古代章回体长篇小说，中国古典四大名著之一，一般认为是清代作家曹雪芹所著。小说以贾、史、王、薛四大家族的兴衰为背景，以富贵公子贾宝玉为视角，以贾宝玉与林黛玉、薛宝钗的爱情婚姻悲剧为主线，描绘了一批举止见识出于须眉之上的闺阁佳人的人生百态，展现了真正的人性美和悲剧美，可以说是一部从各个角度展现女性美以及中国古代社会世态百相的史诗性著作。
+                </p>
+                <p>《红楼梦》版本有120回“程本”和80回“脂本”两大系统。程本为程伟元排印的印刷本，脂本为脂砚斋在不同时期抄评的早期手抄本。脂本是程本的底本。</p>
+                <p>
+                  《红楼梦》是一部具有世界影响力的人情小说，举世公认的中国古典小说巅峰之作，中国封建社会的百科全书，传统文化的集大成者。小说以“大旨谈情，实录其事”自勉，只按自己的事体情理，按迹循踪，摆脱旧套，新鲜别致，取得了非凡的艺术成就。“真事隐去，假语村言”的特殊笔法更是令后世读者脑洞大开，揣测之说久而遂多。二十世纪以来，学术界因《红楼梦》异常出色的艺术成就和丰富深刻的思想底蕴而产生了以《红楼梦》为研究对象的专门学问——红学。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var gotoTop1 = new galaxy.ScrollSpy('#scrollSpy1', {
+        // init: false
+        labels: '.com3-nav-item',
+        activeClass: 'active',
+        // scrollBox: '.com3-body',
+        // threshold: 1000
+      });
+      var scrollFixed1 = new galaxy.ScrollFixed('#scrollFixed1', {
+        fixedBox: '.com3-nav',
+        // init: true,
+        // scrollBox: window,
+        // threshold: 20,
+        // fixedClass: 'galaxy-fixed'
+      });
+    </script>
+
+    <div class="card">
+      <div class="card-header">菜单</div>
+      <div class="card-body">
+        <div class="menu" id="menu1">
+          <div class="menu-item">
+            <span class="menu-link">四大名著 <span class="arrow"></span></span>
+            <div class="submenu">
+              <a href="javascript:;" class="submenu-item">水浒传</a>
+              <a href="javascript:;" class="submenu-item">三国演义</a>
+              <a href="javascript:;" class="submenu-item">西游记</a>
+              <a href="javascript:;" class="submenu-item">红楼梦</a>
+            </div>
+          </div>
+          <div class="menu-item active">
+            <span class="menu-link">四书 <span class="arrow"></span></span>
+            <div class="submenu">
+              <a href="javascript:;" class="submenu-item">大学</a>
+              <a href="javascript:;" class="submenu-item">中庸</a>
+              <a href="javascript:;" class="submenu-item">论语</a>
+              <a href="javascript:;" class="submenu-item">孟子</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <span class="menu-link">五经 <span class="arrow"></span></span>
+            <div class="submenu">
+              <a href="javascript:;" class="submenu-item">诗经</a>
+              <a href="javascript:;" class="submenu-item">尚书</a>
+              <a href="javascript:;" class="submenu-item">礼记</a>
+              <a href="javascript:;" class="submenu-item">周易</a>
+              <a href="javascript:;" class="submenu-item">春秋</a>
+            </div>
+          </div>
+          <div class="menu-item">
+            <a href="javascript:;" class="menu-link">世说新语</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var carousel = new galaxy.Menu('#menu1', {
+        menuItems: '.menu-item',
+        subMenu: '.submenu',
+        activeClass: 'active',
+        effect: 'fade',
+        duration: 300,
+        hideDelay: 50,
+        showDelay: 50,
+        easing: 'linear'
+      });
+    </script>
+
+    <div style="height: 400px;"></div>
+  </div>
+</body>
+
+</html>

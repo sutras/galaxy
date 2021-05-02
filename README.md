@@ -1,2 +1,1 @@
-# galaxy
-解决PC端大部分网页特效的库
+<a target="_blank" href="https://sutras.github.io/galaxy">文档和案例</a>
