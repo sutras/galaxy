@@ -1,0 +1,2864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <title>Galaxy文档</title>
+    <style>/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+</style>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <script src="./assets/js/galaxy.js"></script>
+  </head>
+  <body>
+    <script>
+      (function() {
+        var utils = galaxy.utils;
+        var breakpoint = 992;
+        var state = 0;
+        function emitResize() {
+          utils.emit(window, 'resize');
+        }
+        function onBreakpoint() {
+          const currState = window.innerWidth < breakpoint ? -1 : 1;
+          if (state !== currState) {
+            state = currState;
+            if (state === 1) {
+              document.body.classList.add('show', 'large');
+            } else {
+              document.body.classList.remove('show', 'large');
+            }
+
+            this.sidebarShown = state === 1;
+          }
+        }
+        onBreakpoint();
+        utils.on(window, 'resize', onBreakpoint);
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+          utils.on(utils.$('.aside-button'), 'click', function() {
+            document.body.classList.toggle('show');
+            emitResize();
+          });
+          utils.on(utils.$('.mask'), 'click', function() {
+            document.body.classList.remove('show');
+          });
+          utils.on(utils.$('main'), 'transitionend', function() {
+            emitResize();
+          });
+
+        });
+      })();
+    </script>
+
+    <aside>
+      <ul><li><a href="#1Galaxy">Galaxy</a></li><li><a href="#2兼容性">兼容性</a></li><li><a href="#3下载">下载</a></li><li><a href="#4用法">用法</a></li><li><a href="#5基础演示">基础演示</a><ul><li><a href="#6轮播图 - 淡入淡出">轮播图 - 淡入淡出</a></li><li><a href="#7轮播图 - 滑动">轮播图 - 滑动</a></li><li><a href="#8轮播图 - 循环滑动">轮播图 - 循环滑动</a></li><li><a href="#9轮播图 - 垂直滑动">轮播图 - 垂直滑动</a></li><li><a href="#10轮播图 - 堆叠">轮播图 - 堆叠</a></li><li><a href="#11轮播图 - 垂直堆叠">轮播图 - 垂直堆叠</a></li><li><a href="#12轮播图 - 牌组 - 抽取">轮播图 - 牌组 - 抽取</a></li><li><a href="#13轮播图 - 牌组 - 覆盖">轮播图 - 牌组 - 覆盖</a></li><li><a href="#14轮播图 - 垂直牌组">轮播图 - 垂直牌组</a></li><li><a href="#15手风琴">手风琴</a></li><li><a href="#16选项卡/标签页">选项卡/标签页</a></li><li><a href="#17菜单 - 淡入淡出">菜单 - 淡入淡出</a></li><li><a href="#18菜单 - 滑动">菜单 - 滑动</a></li><li><a href="#19跑马灯 - 垂直">跑马灯 - 垂直</a></li><li><a href="#20跑马灯 - 水平">跑马灯 - 水平</a></li><li><a href="#21滚动监听 + 滚动固定">滚动监听 + 滚动固定</a></li><li><a href="#22回到页面顶部">回到页面顶部</a></li></ul></li><li><a href="#23接口文档">接口文档</a><ul><li><a href="#24Carousel">Carousel</a><ul><li><a href="#25配置选项">配置选项</a></li><li><a href="#26方法">方法</a></li><li><a href="#27属性">属性</a></li><li><a href="#28事件">事件</a></li></ul></li><li><a href="#29Marquee">Marquee</a><ul><li><a href="#30配置选项">配置选项</a></li><li><a href="#31方法">方法</a></li><li><a href="#32属性">属性</a></li></ul></li><li><a href="#33Accordion">Accordion</a><ul><li><a href="#34配置选项">配置选项</a></li><li><a href="#35方法">方法</a></li><li><a href="#36属性">属性</a></li></ul></li><li><a href="#37GotoTop">GotoTop</a><ul><li><a href="#38配置选项">配置选项</a></li><li><a href="#39方法">方法</a></li></ul></li><li><a href="#40Menu">Menu</a><ul><li><a href="#41配置选项">配置选项</a></li><li><a href="#42方法">方法</a></li></ul></li><li><a href="#43ScrollFixed">ScrollFixed</a><ul><li><a href="#44配置选项">配置选项</a></li><li><a href="#45方法">方法</a></li></ul></li><li><a href="#46ScrollSpy">ScrollSpy</a><ul><li><a href="#47配置选项">配置选项</a></li><li><a href="#48方法">方法</a></li></ul></li><li><a href="#49Tabs">Tabs</a><ul><li><a href="#50配置选项">配置选项</a></li><li><a href="#51方法">方法</a></li><li><a href="#52属性">属性</a></li></ul></li></ul></li></ul>
+    </aside>
+
+    <main>
+      <span class="aside-button">☰</span>
+
+      <div class="content">
+        <h1>Galaxy</h1>
+<iframe
+  src="https://ghbtns.com/github-btn.html?user=sutras&amp;repo=galaxy&amp;type=watch&amp;count=true&amp;size=large"
+  allowtransparency="true"
+  frameborder="0"
+  scrolling="0"
+  width="80"
+  height="30"
+></iframe>
+<iframe
+  src="https://ghbtns.com/github-btn.html?user=sutras&amp;repo=galaxy&amp;type=fork&amp;count=true&amp;size=large"
+  allowtransparency="true"
+  frameborder="0"
+  scrolling="0"
+  width="80"
+  height="30"
+></iframe>
+<a name="1Galaxy"></a><h2>Galaxy</h2>
+<p>
+  Galaxy是一个与样式弱关联的解决网站绝大部分动效的js库。常见的动效有轮播图、跑马灯、标签切换、手风琴、滚动监听、菜单展示等等。
+</p>
+
+<a name="2兼容性"></a><h2>兼容性</h2>
+<ul>
+  <li>IE9+（含）</li>
+  <li>Chrome</li>
+  <li>Firefox</li>
+</ul>
+
+<a name="3下载"></a><h2>下载</h2>
+<p>
+  <a href="./assets/js/galaxy.min.js" class="btn btn-primary" download
+    >galaxy.min.js</a
+  >
+  <small>73.79KB (已压缩)</small>
+</p>
+<p>
+  <a href="./assets/js/galaxy.js" class="btn btn-default" download>galaxy.js</a>
+  <small>174.54KB (未压缩)</small>
+</p>
+
+<a name="4用法"></a><h2>用法</h2>
+<ol>
+  <li><p>首先加载库文件</p></li>
+  <pre class="hljs"><code><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  ...
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/js/galaxy.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  ...
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  ...
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+  <li>
+    <p>
+      编写HTML结构。轮播图在通常情况下的结构如下所示。HTML中的类名不是固定的。
+    </p>
+  </li>
+  <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;usageDemo&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span>slide1<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span>slide2<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span>slide3<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span>slide4<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-symbol">&amp;lt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-symbol">&amp;gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+  <li>
+    <p>
+      添加css样式。galaxy只会添加必要的样式，其他样式需要用户自行添加。最好能做到即使不引入galaxy情况下，页面布局也不会乱，仅仅是没有动效。
+    </p>
+  </li>
+  <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+  <span class="hljs-selector-class">.carousel</span>{<span class="hljs-attribute">position</span>:relative;<span class="hljs-attribute">width</span>:<span class="hljs-number">100%</span>;<span class="hljs-attribute">height</span>:<span class="hljs-number">320px</span>;<span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span> auto;<span class="hljs-attribute">overflow</span>:hidden;}
+  <span class="hljs-selector-class">.carousel-wrapper</span>{<span class="hljs-attribute">position</span>:relative;<span class="hljs-attribute">z-index</span>:<span class="hljs-number">1</span>;<span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">list-style</span>:none;}
+  <span class="hljs-selector-class">.carousel-pagination</span>{<span class="hljs-attribute">position</span>:absolute;<span class="hljs-attribute">bottom</span>:<span class="hljs-number">20px</span>;<span class="hljs-attribute">left</span>:<span class="hljs-number">50%</span>;<span class="hljs-attribute">z-index</span>:<span class="hljs-number">2</span>;<span class="hljs-attribute">height</span>:<span class="hljs-number">12px</span>;<span class="hljs-attribute">line-height</span>:<span class="hljs-number">12px</span>;<span class="hljs-attribute">padding</span>:<span class="hljs-number">4px</span> <span class="hljs-number">8px</span>;-webkit-<span class="hljs-attribute">transform</span>:<span class="hljs-built_in">translateX</span>(-<span class="hljs-number">50%</span>);-ms-<span class="hljs-attribute">transform</span>:<span class="hljs-built_in">translateX</span>(-<span class="hljs-number">50%</span>);<span class="hljs-attribute">transform</span>:<span class="hljs-built_in">translateX</span>(-<span class="hljs-number">50%</span>);<span class="hljs-attribute">background-color</span>:<span class="hljs-built_in">hsla</span>(<span class="hljs-number">39</span>,<span class="hljs-number">100%</span>,<span class="hljs-number">10%</span>,.<span class="hljs-number">3</span>);<span class="hljs-attribute">border-radius</span>:<span class="hljs-number">12px</span>;<span class="hljs-attribute">white-space</span>:nowrap;}
+  <span class="hljs-selector-class">.carousel-pagination</span> <span class="hljs-selector-tag">span</span>{<span class="hljs-attribute">display</span>:inline-block;<span class="hljs-attribute">width</span>:<span class="hljs-number">12px</span>;<span class="hljs-attribute">height</span>:<span class="hljs-number">12px</span>;<span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span> <span class="hljs-number">6px</span>;<span class="hljs-attribute">border-radius</span>:<span class="hljs-number">100%</span>;<span class="hljs-attribute">background-color</span>:<span class="hljs-built_in">hsla</span>(<span class="hljs-number">39</span>,<span class="hljs-number">100%</span>,<span class="hljs-number">100%</span>,.<span class="hljs-number">95</span>);<span class="hljs-attribute">cursor</span>:pointer;}
+  <span class="hljs-selector-class">.carousel-pagination</span> <span class="hljs-selector-tag">span</span><span class="hljs-selector-class">.active</span>{<span class="hljs-attribute">background-color</span>:<span class="hljs-built_in">hsla</span>(<span class="hljs-number">39</span>,<span class="hljs-number">100%</span>,<span class="hljs-number">10%</span>,.<span class="hljs-number">95</span>);}
+  <span class="hljs-selector-class">.carousel-arrow</span>{<span class="hljs-attribute">position</span>:absolute;<span class="hljs-attribute">top</span>:<span class="hljs-number">50%</span>;<span class="hljs-attribute">z-index</span>:<span class="hljs-number">2</span>;<span class="hljs-attribute">margin-top</span>:-<span class="hljs-number">30px</span>;<span class="hljs-attribute">width</span>:<span class="hljs-number">34px</span>;<span class="hljs-attribute">height</span>:<span class="hljs-number">60px</span>;<span class="hljs-attribute">text-align</span>:center;<span class="hljs-attribute">line-height</span>:<span class="hljs-number">60px</span>;<span class="hljs-attribute">color</span>:<span class="hljs-number">#fff</span>;<span class="hljs-attribute">text-decoration</span>:none;<span class="hljs-attribute">background-color</span>:<span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,.<span class="hljs-number">3</span>);}
+  <span class="hljs-selector-class">.carousel-arrow</span><span class="hljs-selector-pseudo">:hover</span>{<span class="hljs-attribute">background-color</span>:<span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,.<span class="hljs-number">6</span>);}
+  <span class="hljs-selector-class">.carousel-prev</span>{<span class="hljs-attribute">left</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">background-position</span>:<span class="hljs-number">0</span> <span class="hljs-number">17px</span>;}
+  <span class="hljs-selector-class">.carousel-next</span>{<span class="hljs-attribute">right</span>:<span class="hljs-number">0</span>;<span class="hljs-attribute">background-position</span><span class="hljs-selector-pseudo">:right</span> <span class="hljs-number">17px</span>;}
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></code></pre>
+  <li>
+    <p>初始化galaxy</p>
+  </li>
+  <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#usageDemo&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;slide&#x27;</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });      
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+  <li>
+    <p>完成。</p>
+  </li>
+</ol>
+
+<a name="5基础演示"></a><h2>基础演示</h2>
+<a name="6轮播图 - 淡入淡出"></a><h3>轮播图 - 淡入淡出</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselFade">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselFade', {
+    effect: 'fade',
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselFade&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselFade&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;fade&#x27;</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="7轮播图 - 滑动"></a><h3>轮播图 - 滑动</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselSlide">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselSlide', {
+    effect: 'slide',
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselSlide&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselSlide&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;slide&#x27;</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="8轮播图 - 循环滑动"></a><h3>轮播图 - 循环滑动</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselSlideLoop">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselSlideLoop', {
+    effect: 'slide',
+    effectSlide: {
+      loop: true,
+    },
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselSlideLoop&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselSlideLoop&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;slide&#x27;</span>,
+    <span class="hljs-attr">effectSlide</span>: {
+      <span class="hljs-attr">loop</span>: <span class="hljs-literal">true</span>,
+    },
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="9轮播图 - 垂直滑动"></a><h3>轮播图 - 垂直滑动</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselSlideVertical">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselSlideVertical', {
+    effect: 'slide',
+    direction: 'vertical',
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselSlideVertical&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselSlideVertical&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;slide&#x27;</span>,
+    <span class="hljs-attr">direction</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="10轮播图 - 堆叠"></a><h3>轮播图 - 堆叠</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel carousel-stack" id="carouselStack">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  (function () {
+    var carouselStackIns = new galaxy.Carousel('#carouselStack', {
+      effect: 'stack',
+      effectStack: {
+        layer: 3
+      },
+      resize: true,
+      wrapper: '.carousel-wrapper',
+      navigation: {
+        prevEl: '.carousel-prev',
+        nextEl: '.carousel-next'
+      },
+      pagination: {
+        el: '.carousel-pagination',
+        bulletActiveClass: 'active'
+      }
+    });
+
+    var breakpoint = false;
+    function breakpointChange(fn) {
+      var isSmall = window.innerWidth <= 768;
+      if (isSmall && breakpoint !== -1) {
+        breakpoint = -1;
+        fn(-1);
+      }
+      if (!isSmall && breakpoint !== 1) {
+        breakpoint = 1;
+        fn(1);
+      }
+    }
+    
+    function handler() {
+      breakpointChange(function (breakpoint) {
+        carouselStackIns.destroy();
+        carouselStackIns.params.effectStack.layer = breakpoint < 0 ? 2 : 3;
+        carouselStackIns.init();
+      });
+    }
+    window.addEventListener('resize', handler);
+    handler();
+  })();
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel carousel-stack&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselStack&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> carouselStackIns = <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselStack&#x27;</span>, {
+      <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;stack&#x27;</span>,
+      <span class="hljs-attr">effectStack</span>: {
+        <span class="hljs-attr">layer</span>: <span class="hljs-number">3</span>
+      },
+      <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+      <span class="hljs-attr">navigation</span>: {
+        <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+        <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+      },
+      <span class="hljs-attr">pagination</span>: {
+        <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+        <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+      }
+    });
+
+    <span class="hljs-keyword">var</span> breakpoint = <span class="hljs-literal">false</span>;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">breakpointChange</span>(<span class="hljs-params">fn</span>) </span>{
+      <span class="hljs-keyword">var</span> isSmall = <span class="hljs-built_in">window</span>.innerWidth &lt;= <span class="hljs-number">768</span>;
+      <span class="hljs-keyword">if</span> (isSmall &amp;&amp; breakpoint !== -<span class="hljs-number">1</span>) {
+        breakpoint = -<span class="hljs-number">1</span>;
+        fn(-<span class="hljs-number">1</span>);
+      }
+      <span class="hljs-keyword">if</span> (!isSmall &amp;&amp; breakpoint !== <span class="hljs-number">1</span>) {
+        breakpoint = <span class="hljs-number">1</span>;
+        fn(<span class="hljs-number">1</span>);
+      }
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handler</span>(<span class="hljs-params"></span>) </span>{
+      breakpointChange(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">breakpoint</span>) </span>{
+        carouselStackIns.destroy();
+        carouselStackIns.params.effectStack.layer = breakpoint &lt; <span class="hljs-number">0</span> ? <span class="hljs-number">2</span> : <span class="hljs-number">3</span>;
+        carouselStackIns.init();
+      });
+    }
+    <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&#x27;resize&#x27;</span>, handler);
+    handler();
+  })();
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="11轮播图 - 垂直堆叠"></a><h3>轮播图 - 垂直堆叠</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel carousel-stack carousel-stack-vertical" id="carouselStackVertical">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselStackVertical', {
+    effect: 'stack',
+    effectStack: {
+      layer: 2,
+      changeZIndex: 'before'
+    },
+    duration: 400,
+    resize: true,
+    direction: 'vertical',
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel carousel-stack carousel-stack-vertical&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselStackVertical&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselStackVertical&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;stack&#x27;</span>,
+    <span class="hljs-attr">effectStack</span>: {
+      <span class="hljs-attr">layer</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-attr">changeZIndex</span>: <span class="hljs-string">&#x27;before&#x27;</span>
+    },
+    <span class="hljs-attr">duration</span>: <span class="hljs-number">400</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">direction</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="12轮播图 - 牌组 - 抽取"></a><h3>轮播图 - 牌组 - 抽取</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselDeck">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselDeck', {
+    effect: 'deck',
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselDeck&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselDeck&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;deck&#x27;</span>,
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="13轮播图 - 牌组 - 覆盖"></a><h3>轮播图 - 牌组 - 覆盖</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselDeckCover">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselDeckCover', {
+    effect: 'deck',
+    effectDeck: {
+      type: 'cover'
+    },
+    resize: true,
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselDeckCover&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselDeckCover&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;deck&#x27;</span>,
+    <span class="hljs-attr">effectDeck</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;cover&#x27;</span>
+    },
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="14轮播图 - 垂直牌组"></a><h3>轮播图 - 垂直牌组</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="carousel" id="carouselDeckVertical">
+  <ul class="carousel-wrapper">
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a01.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a02.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a03.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a04.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a05.jpg" /></a></li>
+    <li class="carousel-slide"><a href="javascript:;"><img src="./assets/img/a06.jpg" /></a></li>
+  </ul>
+  <div class="carousel-pagination"></div>
+  <a href="javascript:;" class="carousel-arrow carousel-prev"></a>
+  <a href="javascript:;" class="carousel-arrow carousel-next"></a>
+</div>
+        <script>
+  new galaxy.Carousel('#carouselDeckVertical', {
+    effect: 'deck',
+    effectDeck: {
+      type: 'draw',
+      prevEasing: null,
+      nextEasing: 'easeOutBounce',
+      prevDuration: null,
+      nextDuration: 2000
+    },
+    resize: true,
+    direction: 'vertical',
+    wrapper: '.carousel-wrapper',
+    navigation: {
+      prevEl: '.carousel-prev',
+      nextEl: '.carousel-next'
+    },
+    pagination: {
+      el: '.carousel-pagination',
+      bulletActiveClass: 'active'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carouselDeckVertical&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-wrapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a01.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a02.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a03.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a04.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a05.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/a06.jpg&quot;</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-pagination&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-arrow carousel-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Carousel(<span class="hljs-string">&#x27;#carouselDeckVertical&#x27;</span>, {
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;deck&#x27;</span>,
+    <span class="hljs-attr">effectDeck</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;draw&#x27;</span>,
+      <span class="hljs-attr">prevEasing</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-attr">nextEasing</span>: <span class="hljs-string">&#x27;easeOutBounce&#x27;</span>,
+      <span class="hljs-attr">prevDuration</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-attr">nextDuration</span>: <span class="hljs-number">2000</span>
+    },
+    <span class="hljs-attr">resize</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">direction</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.carousel-wrapper&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.carousel-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.carousel-next&#x27;</span>
+    },
+    <span class="hljs-attr">pagination</span>: {
+      <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;.carousel-pagination&#x27;</span>,
+      <span class="hljs-attr">bulletActiveClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="15手风琴"></a><h3>手风琴</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="accordion" id="accordion">
+  <div class="accordion-item">
+    <div class="accordion-header"><span class="arrow"></span> 白胡子</div>
+    <div class="accordion-content">
+      爱德华·纽盖特，享年72岁。外号“白胡子”，被称为世界最强的男人”，悬赏金50亿4600万贝里。能力是震震果实，武器为最上大业物12工之一“丛云切”。他是旧时代传说海贼之一，原洛克斯海贼团船员，与前海贼王哥尔·D·罗杰齐名，是罗杰死后的无冕之王，2年前战死于顶上战争。
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-header"><span class="arrow"></span> 红发</div>
+    <div class="accordion-content">
+      香克斯，39岁。外号“红发”，红发海贼团头目，悬赏金40亿4890万贝里。没有食用恶魔果实，以霸气和剑术战斗，武器为“格里芬”。过去是罗杰海贼团见习船员。
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-header"><span class="arrow"></span> 百兽</div>
+    <div class="accordion-content">
+      凯多，年龄不详。外号“百兽”，百兽海贼团总督，悬赏金46亿1110万贝里。鱼鱼果实·幻兽种·青龙形态能力者，能够化身为青龙。人称“最强的生物”，以强硬体质和不死传说闻名。过去是洛克斯海贼团见习船员。
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-header"><span class="arrow"></span> BIG MOM</div>
+    <div class="accordion-content">
+      夏洛特·玲玲，68岁。外号“BIG·MOM”，BIG·MOM海贼团船长，悬赏金43亿8800万贝里。魂魂果实能力者。过去是洛克斯海贼团船员。
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-header"><span class="arrow"></span> 黑胡子</div>
+    <div class="accordion-content">
+      马歇尔·D·蒂奇，40岁。外号“黑胡子”，黑胡子海贼团提督，悬赏金22亿4760万贝里。暗暗果实以及震震果实的双果实能力者。过去是白胡子海贼团第2队队员，2年前加入七武海释放监狱犯人并收为部下，1年前打败马尔高带领的白胡子残党，取代白胡子并被称为新任四皇之一。
+    </div>
+  </div>
+</div>
+        <script>
+  new galaxy.Accordion('#accordion', {
+    labels: '.accordion-header',
+    panels: '.accordion-content',
+    atLeastOne: false
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;accordion&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-header&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> 白胡子<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-content&quot;</span>&gt;</span>
+      爱德华·纽盖特，享年72岁。外号“白胡子”，被称为世界最强的男人”，悬赏金50亿4600万贝里。能力是震震果实，武器为最上大业物12工之一“丛云切”。他是旧时代传说海贼之一，原洛克斯海贼团船员，与前海贼王哥尔·D·罗杰齐名，是罗杰死后的无冕之王，2年前战死于顶上战争。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-header&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> 红发<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-content&quot;</span>&gt;</span>
+      香克斯，39岁。外号“红发”，红发海贼团头目，悬赏金40亿4890万贝里。没有食用恶魔果实，以霸气和剑术战斗，武器为“格里芬”。过去是罗杰海贼团见习船员。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-header&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> 百兽<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-content&quot;</span>&gt;</span>
+      凯多，年龄不详。外号“百兽”，百兽海贼团总督，悬赏金46亿1110万贝里。鱼鱼果实·幻兽种·青龙形态能力者，能够化身为青龙。人称“最强的生物”，以强硬体质和不死传说闻名。过去是洛克斯海贼团见习船员。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-header&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> BIG MOM<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-content&quot;</span>&gt;</span>
+      夏洛特·玲玲，68岁。外号“BIG·MOM”，BIG·MOM海贼团船长，悬赏金43亿8800万贝里。魂魂果实能力者。过去是洛克斯海贼团船员。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-header&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> 黑胡子<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;accordion-content&quot;</span>&gt;</span>
+      马歇尔·D·蒂奇，40岁。外号“黑胡子”，黑胡子海贼团提督，悬赏金22亿4760万贝里。暗暗果实以及震震果实的双果实能力者。过去是白胡子海贼团第2队队员，2年前加入七武海释放监狱犯人并收为部下，1年前打败马尔高带领的白胡子残党，取代白胡子并被称为新任四皇之一。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Accordion(<span class="hljs-string">&#x27;#accordion&#x27;</span>, {
+    <span class="hljs-attr">labels</span>: <span class="hljs-string">&#x27;.accordion-header&#x27;</span>,
+    <span class="hljs-attr">panels</span>: <span class="hljs-string">&#x27;.accordion-content&#x27;</span>,
+    <span class="hljs-attr">atLeastOne</span>: <span class="hljs-literal">false</span>
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="16选项卡/标签页"></a><h3>选项卡/标签页</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="tabs" id="tabs">
+  <div class="tabs-header">
+    <div class="tabs-label">黄猿</div>
+    <div class="tabs-label">藤虎</div>
+    <div class="tabs-label">绿牛</div>
+    <div class="tabs-label">青雉</div>
+    <div class="tabs-label">赤犬</div>
+    <div class="tabs-label">泽法</div>
+    <div class="tabs-label">战国</div>
+    <div class="tabs-label">空</div>
+  </div>
+  <div class="tabs-body">
+    <div class="tabs-panel">
+      波鲁萨利诺。
+      简介：现任海军本部大将，自然系闪光果实能力者。拥有强大的剑术和踢技以及射击能力。刚加入海军之时，就已实力高强，被称为怪物。
+      性格：外柔内刚，做事不认真。战斗时喜欢调侃对手，见到谁都说“好可怕啊，还经常故意做出示弱的样子，但其实并不把对手当回事。
+      正义观：模棱两可的正义
+    </div>
+    <div class="tabs-panel">
+      一生。
+      简介：现任海军本部大将，超人系重力果实能力者。两年间通过世界征兵选取的新人大将，被称为强的没边的怪物。
+      性格：非常和气，即使是对敌人，也一样用敬称。是非分明，欣赏具有正义感的人。
+      正义观：仁义的正义
+    </div>
+    <div class="tabs-panel">
+      真名未知。
+      简介：现任海军本部大将。两年间通过世界征兵选取的新人大将，被称为强的没边的怪物。
+    </div>
+    <div class="tabs-panel">
+      库赞。
+      两年前曾任海军本部大将，之后退出海军。自然系冰冻果实能力者。
+      正义观：悠闲的正义
+    </div>
+    <div class="tabs-panel">
+      萨卡斯基。
+      两年前曾任海军本部大将，之后升任海军本部元帅。自然系岩浆果实能力者。
+      正义观：彻底的正义
+    </div>
+    <div class="tabs-panel">
+      人称“黑腕”泽法、“不杀”大将、“Z”。十多年前曾任海军本部大将，之后退出海军，自己建立了NEO海军。
+    </div>
+    <div class="tabs-panel">
+      人称“佛之战国”、“智将”战国，十多年前曾任海军本部大将，之后升任海军本部元帅，现退位为海军本部大督查。动物系幻兽种人人果实大佛形态能力者。
+      正义观：君临天下的正义
+    </div>
+    <div class="tabs-panel">
+      人称“钢骨”空，数十年前曾任海军本部大将，之后升任海军本部元帅，现任世界政府全军总帅。
+    </div>
+  </div>
+</div>
+        <script>
+  new galaxy.Tabs('#tabs', {
+    labels: '.tabs-label',
+    panels: '.tabs-panel',
+    triggerType: 'mouseenter'
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;tabs&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-header&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>黄猿<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>藤虎<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>绿牛<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>青雉<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>赤犬<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>泽法<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>战国<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-label&quot;</span>&gt;</span>空<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-body&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      波鲁萨利诺。
+      简介：现任海军本部大将，自然系闪光果实能力者。拥有强大的剑术和踢技以及射击能力。刚加入海军之时，就已实力高强，被称为怪物。
+      性格：外柔内刚，做事不认真。战斗时喜欢调侃对手，见到谁都说“好可怕啊，还经常故意做出示弱的样子，但其实并不把对手当回事。
+      正义观：模棱两可的正义
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      一生。
+      简介：现任海军本部大将，超人系重力果实能力者。两年间通过世界征兵选取的新人大将，被称为强的没边的怪物。
+      性格：非常和气，即使是对敌人，也一样用敬称。是非分明，欣赏具有正义感的人。
+      正义观：仁义的正义
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      真名未知。
+      简介：现任海军本部大将。两年间通过世界征兵选取的新人大将，被称为强的没边的怪物。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      库赞。
+      两年前曾任海军本部大将，之后退出海军。自然系冰冻果实能力者。
+      正义观：悠闲的正义
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      萨卡斯基。
+      两年前曾任海军本部大将，之后升任海军本部元帅。自然系岩浆果实能力者。
+      正义观：彻底的正义
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      人称“黑腕”泽法、“不杀”大将、“Z”。十多年前曾任海军本部大将，之后退出海军，自己建立了NEO海军。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      人称“佛之战国”、“智将”战国，十多年前曾任海军本部大将，之后升任海军本部元帅，现退位为海军本部大督查。动物系幻兽种人人果实大佛形态能力者。
+      正义观：君临天下的正义
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs-panel&quot;</span>&gt;</span>
+      人称“钢骨”空，数十年前曾任海军本部大将，之后升任海军本部元帅，现任世界政府全军总帅。
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Tabs(<span class="hljs-string">&#x27;#tabs&#x27;</span>, {
+    <span class="hljs-attr">labels</span>: <span class="hljs-string">&#x27;.tabs-label&#x27;</span>,
+    <span class="hljs-attr">panels</span>: <span class="hljs-string">&#x27;.tabs-panel&#x27;</span>,
+    <span class="hljs-attr">triggerType</span>: <span class="hljs-string">&#x27;mouseenter&#x27;</span>
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="17菜单 - 淡入淡出"></a><h3>菜单 - 淡入淡出</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="menu" id="menuFade">
+  <div class="menu-item">
+    <span class="menu-link">三大灾害 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">炎灾·烬</a>
+      <a href="javascript:;" class="submenu-item">疫灾·奎因</a>
+      <a href="javascript:;" class="submenu-item">旱灾·杰克</a>
+    </div>
+  </div>
+  <div class="menu-item active">
+    <span class="menu-link">世界政府三大机构 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">司法岛艾尼艾斯大厅</a>
+      <a href="javascript:;" class="submenu-item">海军本部</a>
+      <a href="javascript:;" class="submenu-item">推进城因佩尔大监狱</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <span class="menu-link">古代兵器 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">冥王（布鲁托）</a>
+      <a href="javascript:;" class="submenu-item">海王（波塞冬</a>
+      <a href="javascript:;" class="submenu-item">天王（乌拉诺斯）</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <a href="javascript:;" class="menu-link">伊姆</a>
+  </div>
+</div>
+        <script>
+  new galaxy.Menu('#menuFade', {
+    menuItems: '.menu-item',
+    subMenu: '.submenu',
+    activeClass: 'active',
+    effect: 'fade',
+    duration: 300,
+    hideDelay: 50,
+    showDelay: 50,
+    easing: 'linear'
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;menuFade&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>三大灾害 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>炎灾·烬<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>疫灾·奎因<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>旱灾·杰克<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item active&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>世界政府三大机构 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>司法岛艾尼艾斯大厅<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>海军本部<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>推进城因佩尔大监狱<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>古代兵器 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>冥王（布鲁托）<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>海王（波塞冬<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>天王（乌拉诺斯）<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>伊姆<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Menu(<span class="hljs-string">&#x27;#menuFade&#x27;</span>, {
+    <span class="hljs-attr">menuItems</span>: <span class="hljs-string">&#x27;.menu-item&#x27;</span>,
+    <span class="hljs-attr">subMenu</span>: <span class="hljs-string">&#x27;.submenu&#x27;</span>,
+    <span class="hljs-attr">activeClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>,
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;fade&#x27;</span>,
+    <span class="hljs-attr">duration</span>: <span class="hljs-number">300</span>,
+    <span class="hljs-attr">hideDelay</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">showDelay</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">easing</span>: <span class="hljs-string">&#x27;linear&#x27;</span>
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="18菜单 - 滑动"></a><h3>菜单 - 滑动</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="menu" id="menuSlide">
+  <div class="menu-item">
+    <span class="menu-link">三大灾害 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">炎灾·烬</a>
+      <a href="javascript:;" class="submenu-item">疫灾·奎因</a>
+      <a href="javascript:;" class="submenu-item">旱灾·杰克</a>
+    </div>
+  </div>
+  <div class="menu-item active">
+    <span class="menu-link">世界政府三大机构 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">司法岛艾尼艾斯大厅</a>
+      <a href="javascript:;" class="submenu-item">海军本部</a>
+      <a href="javascript:;" class="submenu-item">推进城因佩尔大监狱</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <span class="menu-link">古代兵器 <span class="arrow"></span></span>
+    <div class="submenu">
+      <a href="javascript:;" class="submenu-item">冥王（布鲁托）</a>
+      <a href="javascript:;" class="submenu-item">海王（波塞冬</a>
+      <a href="javascript:;" class="submenu-item">天王（乌拉诺斯）</a>
+    </div>
+  </div>
+  <div class="menu-item">
+    <a href="javascript:;" class="menu-link">伊姆</a>
+  </div>
+</div>
+        <script>
+  new galaxy.Menu('#menuSlide', {
+    menuItems: '.menu-item',
+    subMenu: '.submenu',
+    activeClass: 'active',
+    effect: 'slide',
+    duration: 300,
+    hideDelay: 50,
+    showDelay: 50,
+    easing: 'linear'
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;menuSlide&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>三大灾害 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>炎灾·烬<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>疫灾·奎因<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>旱灾·杰克<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item active&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>世界政府三大机构 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>司法岛艾尼艾斯大厅<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>海军本部<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>推进城因佩尔大监狱<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>古代兵器 <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>冥王（布鲁托）<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>海王（波塞冬<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submenu-item&quot;</span>&gt;</span>天王（乌拉诺斯）<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-item&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;menu-link&quot;</span>&gt;</span>伊姆<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Menu(<span class="hljs-string">&#x27;#menuSlide&#x27;</span>, {
+    <span class="hljs-attr">menuItems</span>: <span class="hljs-string">&#x27;.menu-item&#x27;</span>,
+    <span class="hljs-attr">subMenu</span>: <span class="hljs-string">&#x27;.submenu&#x27;</span>,
+    <span class="hljs-attr">activeClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>,
+    <span class="hljs-attr">effect</span>: <span class="hljs-string">&#x27;slide&#x27;</span>,
+    <span class="hljs-attr">duration</span>: <span class="hljs-number">300</span>,
+    <span class="hljs-attr">hideDelay</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">showDelay</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">easing</span>: <span class="hljs-string">&#x27;linear&#x27;</span>
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="19跑马灯 - 垂直"></a><h3>跑马灯 - 垂直</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="marquee" id="marquee">
+  <div class="marquee-header">
+    <div class="marquee-title">白胡子海贼团队长</div>
+    <div class="marquee-header-extra">
+      <a href="javascript:;" class="marquee-prev"><span class="arrow"></span></a>
+      <a href="javascript:;" class="marquee-next"><span class="arrow"></span></a>
+    </div>
+  </div>
+  <div class="marquee-body">
+    <ul class="marquee-content">
+      <li>第1番队队长 - “不死鸟”马尔科</li>
+      <li>第2番队队长（原） - 光月御田</li>
+      <li>第2番队队长 - “火拳”波特卡斯·D·艾斯</li>
+      <li>第3番队队长 - “钻石”乔兹</li>
+      <li>第4番队队长 - 萨奇</li>
+      <li>第5番队队长 - “花剑”比斯塔</li>
+      <li>第6番队队长 - 布拉曼克</li>
+      <li>第7番队队长 - 拉克约</li>
+      <li>第8番队队长 - 那谬尔</li>
+      <li>第9番队队长 - 布伦海姆</li>
+      <li>第10番队队长 - 库利艾尔</li>
+      <li>第11番队队长 - 金古多</li>
+      <li>第12番队队长 - 哈尔塔</li>
+      <li>第13番队队长 - “水牛”阿特摩斯</li>
+      <li>第14番队队长 - 斯比多·基尔</li>
+      <li>第15番队队长 - 佛萨</li>
+      <li>第16番队队长 - 以藏</li>
+    </ul>
+  </div>
+</div>
+        <script>
+  new galaxy.Marquee('#marquee', {
+    wrapper: '.marquee-body ul',
+    navigation: {
+      prevEl: '.marquee-prev',
+      nextEl: '.marquee-next'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;marquee&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-header&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-title&quot;</span>&gt;</span>白胡子海贼团队长<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-header-extra&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-body&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-content&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第1番队队长 - “不死鸟”马尔科<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第2番队队长（原） - 光月御田<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第2番队队长 - “火拳”波特卡斯·D·艾斯<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第3番队队长 - “钻石”乔兹<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第4番队队长 - 萨奇<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第5番队队长 - “花剑”比斯塔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第6番队队长 - 布拉曼克<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第7番队队长 - 拉克约<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第8番队队长 - 那谬尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第9番队队长 - 布伦海姆<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第10番队队长 - 库利艾尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第11番队队长 - 金古多<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第12番队队长 - 哈尔塔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第13番队队长 - “水牛”阿特摩斯<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第14番队队长 - 斯比多·基尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第15番队队长 - 佛萨<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第16番队队长 - 以藏<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Marquee(<span class="hljs-string">&#x27;#marquee&#x27;</span>, {
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.marquee-body ul&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.marquee-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.marquee-next&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="20跑马灯 - 水平"></a><h3>跑马灯 - 水平</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="marquee marquee-horizontal" id="marqueeHorizontal">
+  <div class="marquee-header">
+    <div class="marquee-title">白胡子海贼团队长</div>
+    <div class="marquee-header-extra">
+      <a href="javascript:;" class="marquee-prev"><span class="arrow"></span></a>
+      <a href="javascript:;" class="marquee-next"><span class="arrow"></span></a>
+    </div>
+  </div>
+  <div class="marquee-body">
+    <ul class="marquee-content">
+      <li>第1番队队长 - “不死鸟”马尔科</li>
+      <li>第2番队队长（原） - 光月御田</li>
+      <li>第2番队队长 - “火拳”波特卡斯·D·艾斯</li>
+      <li>第3番队队长 - “钻石”乔兹</li>
+      <li>第4番队队长 - 萨奇</li>
+      <li>第5番队队长 - “花剑”比斯塔</li>
+      <li>第6番队队长 - 布拉曼克</li>
+      <li>第7番队队长 - 拉克约</li>
+      <li>第8番队队长 - 那谬尔</li>
+      <li>第9番队队长 - 布伦海姆</li>
+      <li>第10番队队长 - 库利艾尔</li>
+      <li>第11番队队长 - 金古多</li>
+      <li>第12番队队长 - 哈尔塔</li>
+      <li>第13番队队长 - “水牛”阿特摩斯</li>
+      <li>第14番队队长 - 斯比多·基尔</li>
+      <li>第15番队队长 - 佛萨</li>
+      <li>第16番队队长 - 以藏</li>
+    </ul>
+  </div>
+</div>
+        <script>
+  new galaxy.Marquee('#marqueeHorizontal', {
+    wrapper: '.marquee-body ul',
+    direction: 'horizontal',
+    navigation: {
+      prevEl: '.marquee-prev',
+      nextEl: '.marquee-next'
+    }
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee marquee-horizontal&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;marqueeHorizontal&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-header&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-title&quot;</span>&gt;</span>白胡子海贼团队长<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-header-extra&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-prev&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;javascript:;&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-next&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-body&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;marquee-content&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第1番队队长 - “不死鸟”马尔科<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第2番队队长（原） - 光月御田<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第2番队队长 - “火拳”波特卡斯·D·艾斯<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第3番队队长 - “钻石”乔兹<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第4番队队长 - 萨奇<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第5番队队长 - “花剑”比斯塔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第6番队队长 - 布拉曼克<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第7番队队长 - 拉克约<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第8番队队长 - 那谬尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第9番队队长 - 布伦海姆<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第10番队队长 - 库利艾尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第11番队队长 - 金古多<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第12番队队长 - 哈尔塔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第13番队队长 - “水牛”阿特摩斯<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第14番队队长 - 斯比多·基尔<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第15番队队长 - 佛萨<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>第16番队队长 - 以藏<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.Marquee(<span class="hljs-string">&#x27;#marqueeHorizontal&#x27;</span>, {
+    <span class="hljs-attr">wrapper</span>: <span class="hljs-string">&#x27;.marquee-body ul&#x27;</span>,
+    <span class="hljs-attr">direction</span>: <span class="hljs-string">&#x27;horizontal&#x27;</span>,
+    <span class="hljs-attr">navigation</span>: {
+      <span class="hljs-attr">prevEl</span>: <span class="hljs-string">&#x27;.marquee-prev&#x27;</span>,
+      <span class="hljs-attr">nextEl</span>: <span class="hljs-string">&#x27;.marquee-next&#x27;</span>
+    }
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="21滚动监听 + 滚动固定"></a><h3>滚动监听 + 滚动固定</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        <div class="scrollspy" id="scrollSpy">
+  <div class="scrollspy-header" id="scrollFixed">
+    <div class="scrollspy-nav">
+      <a class="scrollspy-nav-item" href="#scrollspy-target1">赤犬</a>
+      <a class="scrollspy-nav-item" href="#scrollspy-target2">青雉</a>
+      <a class="scrollspy-nav-item" href="#scrollspy-target3">黄猿</a>
+    </div>
+  </div>
+  <div class="scrollspy-body">
+    <h4 class="scrollspy-title">海军三大将</h4>
+    <div class="scrollspy-img" style="float: right;">
+      <img src="./assets/img/sdj.jpg" alt="">
+    </div>
+    <p>海军大将为海军本部的最高战力，因此对担任者的第一个要求就是“实力”，如果没有合适的人选，则会空着位置。</p>
+    <p>海军大将持有“金色电话虫”，拥有随时发动“屠魔令”的权利。可摧毁任意地点，无需向上级通知，即使是世界政府三大机构之一的司法岛也不例外。</p>
+    <p>海军大将不轻易出动，但是世界贵族天龙人可直接调动海军大将做事，正因如此，得罪天龙人是人尽皆知的大忌。</p>
+    <div class="scrollspy-panel">
+      <h5 class="scrollspy-panel-header" id="scrollspy-target1">赤犬 - 萨卡斯基</h5>
+      <div class="scrollspy-panel-body">
+        <p>萨卡斯基，海军本部元帅。海军代号“赤犬”，原“三大将”之一。自然系。浆果实能力者。刚加入海军之时，就被称为“怪物”。是原海军大将“黑腕”泽法的学生。</p>
+        <p>
+          赤犬奉行“彻底的正义”。性格刚直，手段残酷不留一切情面，绝不允许一丝“恶”的存在。为了能完成任务，可以毫不在乎的将同僚和一般民众都当成目标歼灭。奥哈拉事件中，他以可能窝藏考古学家为由，命令部下炸毁载满了奥哈拉居民的避难船。顶上战争中，他也亲自处决了因为害怕战死而打算逃走的海军士兵。赤犬极其注意维护海军的威严，是一个铁血军人。
+        </p>
+        <p>
+          萨卡斯基的样貌是参考日本艺人菅原文太。 [3]  原作者尾田荣一郎曾在与中田康孝访谈中表示过内段时间内最崇拜的偶像就是菅原文太，并称其为”世界第一男子汉“。
+        </p>
+      </div>
+    </div>
+    <div class="scrollspy-panel">
+      <h5 class="scrollspy-panel-header" id="scrollspy-target2">青雉 - 库赞</h5>
+      <div class="scrollspy-panel-body">
+        <p>
+          库赞，海军代号“青雉”，两年前“三大将”之一，自然系冰冻果实能力者，实力强大，是原海军大将黑腕泽法的学生。后与黄猿、赤犬，并称为“海军三大将”。后与赤犬争夺元帅大战十天败北，后选择退出海军，并且与黑胡子海贼团有密切联系。
+        </p>
+        <p>
+          长时间的苦恼使他决心支持“懒散的正义”，他认为“正义”在不同立场的人们身上会有不同见解，并会随立场而改变，所以不会去质疑其他人的“正义”；但当他人要妨碍自己的正义时，就绝对不会放过对方。 性格懒散。但一直保持着冷静的心态。 讲礼貌，见到草帽一伙的时候，都是礼貌待人，不是一见面就刀兵相见；重情义，初次与路飞交手的时候，念在卡普对他有恩的份上，放过了路飞。
+        </p>
+        <p>青雉的原型是参考自日本已故男星松田优作；松田优作以在电视剧《大都会 PARTII》饰演刑警而知名，另《探侦物语》亦为其代表作品。此外，青雉的生日9月21日亦是参照松田的真实生日日期所设定。</p>
+      </div>
+    </div>
+    <div class="scrollspy-panel">
+      <h5 class="scrollspy-panel-header" id="scrollspy-target3">黄猿 - 波鲁萨利诺</h5>
+      <div class="scrollspy-panel-body">
+        <p>
+          两年前以及两年后的“三大将”之一，自然系闪闪果实能力者，拥有强大的剑术和踢技以及射击能力。刚加入海军之时，就已实力高强，被称为怪物。是原海军本部大将黑腕泽法的学生。负责统帅战桃丸率领的海军科学部队。2年前在香波地群岛以压倒性力量秒杀四名超新星。现与绿牛、藤虎，并称为新的三大将。
+        </p>
+        <p>秉承着“模棱两可的正义”。认为“海贼的罪行都是无法消去的”。战斗时喜欢调侃对手，特别喜欢说“好可怕啊”，面对大部分敌人经常做出示弱的样子。说话方式非常缓慢。常常错用不能对话的窃听用的黑色电话虫。</p>
+        <p>黄猿的形象原型为日本演员田中邦卫。被誉为日本最伟大的配角演员之一。</p>
+      </div>
+    </div>
+  </div>
+</div>
+        <script>
+  new galaxy.ScrollSpy('#scrollSpy', {
+    labels: '.scrollspy-nav-item',
+    activeClass: 'active',
+    // scrollBox: '.scrollspy-body'
+  });
+  new galaxy.ScrollFixed('#scrollFixed', {
+    fixedBox: '.scrollspy-nav',
+    offsetTop: 42
+  });
+
+  // 当滚动超过scrollSpy盒子时取消固定，避免遮挡其下内容
+  (function() {
+    var utils = galaxy.utils;
+    var scrollSpy = utils.$('#scrollSpy');
+    var scrollFixed = utils.$('#scrollFixed');
+    var child = scrollFixed.firstElementChild;
+
+    function scrollHandler() {
+      if (scrollSpy.getBoundingClientRect().bottom <= 0) {
+        utils.addClass(child, 'overdo');
+      } else {
+        utils.removeClass(child, 'overdo');
+      }
+    }
+    scrollHandler();
+    utils.on(window, 'scroll', utils.throttle(scrollHandler, 100));
+  })();
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;scrollSpy&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-header&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;scrollFixed&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-nav&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-nav-item&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#scrollspy-target1&quot;</span>&gt;</span>赤犬<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-nav-item&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#scrollspy-target2&quot;</span>&gt;</span>青雉<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-nav-item&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#scrollspy-target3&quot;</span>&gt;</span>黄猿<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-body&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-title&quot;</span>&gt;</span>海军三大将<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-img&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;float: right;&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./assets/img/sdj.jpg&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>海军大将为海军本部的最高战力，因此对担任者的第一个要求就是“实力”，如果没有合适的人选，则会空着位置。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>海军大将持有“金色电话虫”，拥有随时发动“屠魔令”的权利。可摧毁任意地点，无需向上级通知，即使是世界政府三大机构之一的司法岛也不例外。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>海军大将不轻易出动，但是世界贵族天龙人可直接调动海军大将做事，正因如此，得罪天龙人是人尽皆知的大忌。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h5</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-header&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;scrollspy-target1&quot;</span>&gt;</span>赤犬 - 萨卡斯基<span class="hljs-tag">&lt;/<span class="hljs-name">h5</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-body&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>萨卡斯基，海军本部元帅。海军代号“赤犬”，原“三大将”之一。自然系。浆果实能力者。刚加入海军之时，就被称为“怪物”。是原海军大将“黑腕”泽法的学生。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          赤犬奉行“彻底的正义”。性格刚直，手段残酷不留一切情面，绝不允许一丝“恶”的存在。为了能完成任务，可以毫不在乎的将同僚和一般民众都当成目标歼灭。奥哈拉事件中，他以可能窝藏考古学家为由，命令部下炸毁载满了奥哈拉居民的避难船。顶上战争中，他也亲自处决了因为害怕战死而打算逃走的海军士兵。赤犬极其注意维护海军的威严，是一个铁血军人。
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          萨卡斯基的样貌是参考日本艺人菅原文太。 [3]  原作者尾田荣一郎曾在与中田康孝访谈中表示过内段时间内最崇拜的偶像就是菅原文太，并称其为”世界第一男子汉“。
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h5</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-header&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;scrollspy-target2&quot;</span>&gt;</span>青雉 - 库赞<span class="hljs-tag">&lt;/<span class="hljs-name">h5</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-body&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          库赞，海军代号“青雉”，两年前“三大将”之一，自然系冰冻果实能力者，实力强大，是原海军大将黑腕泽法的学生。后与黄猿、赤犬，并称为“海军三大将”。后与赤犬争夺元帅大战十天败北，后选择退出海军，并且与黑胡子海贼团有密切联系。
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          长时间的苦恼使他决心支持“懒散的正义”，他认为“正义”在不同立场的人们身上会有不同见解，并会随立场而改变，所以不会去质疑其他人的“正义”；但当他人要妨碍自己的正义时，就绝对不会放过对方。 性格懒散。但一直保持着冷静的心态。 讲礼貌，见到草帽一伙的时候，都是礼貌待人，不是一见面就刀兵相见；重情义，初次与路飞交手的时候，念在卡普对他有恩的份上，放过了路飞。
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>青雉的原型是参考自日本已故男星松田优作；松田优作以在电视剧《大都会 PARTII》饰演刑警而知名，另《探侦物语》亦为其代表作品。此外，青雉的生日9月21日亦是参照松田的真实生日日期所设定。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h5</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-header&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;scrollspy-target3&quot;</span>&gt;</span>黄猿 - 波鲁萨利诺<span class="hljs-tag">&lt;/<span class="hljs-name">h5</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scrollspy-panel-body&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+          两年前以及两年后的“三大将”之一，自然系闪闪果实能力者，拥有强大的剑术和踢技以及射击能力。刚加入海军之时，就已实力高强，被称为怪物。是原海军本部大将黑腕泽法的学生。负责统帅战桃丸率领的海军科学部队。2年前在香波地群岛以压倒性力量秒杀四名超新星。现与绿牛、藤虎，并称为新的三大将。
+        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>秉承着“模棱两可的正义”。认为“海贼的罪行都是无法消去的”。战斗时喜欢调侃对手，特别喜欢说“好可怕啊”，面对大部分敌人经常做出示弱的样子。说话方式非常缓慢。常常错用不能对话的窃听用的黑色电话虫。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>黄猿的形象原型为日本演员田中邦卫。被誉为日本最伟大的配角演员之一。<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.ScrollSpy(<span class="hljs-string">&#x27;#scrollSpy&#x27;</span>, {
+    <span class="hljs-attr">labels</span>: <span class="hljs-string">&#x27;.scrollspy-nav-item&#x27;</span>,
+    <span class="hljs-attr">activeClass</span>: <span class="hljs-string">&#x27;active&#x27;</span>,
+    <span class="hljs-comment">// scrollBox: &#x27;.scrollspy-body&#x27;</span>
+  });
+  <span class="hljs-keyword">new</span> galaxy.ScrollFixed(<span class="hljs-string">&#x27;#scrollFixed&#x27;</span>, {
+    <span class="hljs-attr">fixedBox</span>: <span class="hljs-string">&#x27;.scrollspy-nav&#x27;</span>,
+    <span class="hljs-attr">offsetTop</span>: <span class="hljs-number">42</span>
+  });
+
+  <span class="hljs-comment">// 当滚动超过scrollSpy盒子时取消固定，避免遮挡其下内容</span>
+  (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> utils = galaxy.utils;
+    <span class="hljs-keyword">var</span> scrollSpy = utils.$(<span class="hljs-string">&#x27;#scrollSpy&#x27;</span>);
+    <span class="hljs-keyword">var</span> scrollFixed = utils.$(<span class="hljs-string">&#x27;#scrollFixed&#x27;</span>);
+    <span class="hljs-keyword">var</span> child = scrollFixed.firstElementChild;
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scrollHandler</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span> (scrollSpy.getBoundingClientRect().bottom &lt;= <span class="hljs-number">0</span>) {
+        utils.addClass(child, <span class="hljs-string">&#x27;overdo&#x27;</span>);
+      } <span class="hljs-keyword">else</span> {
+        utils.removeClass(child, <span class="hljs-string">&#x27;overdo&#x27;</span>);
+      }
+    }
+    scrollHandler();
+    utils.on(<span class="hljs-built_in">window</span>, <span class="hljs-string">&#x27;scroll&#x27;</span>, utils.throttle(scrollHandler, <span class="hljs-number">100</span>));
+  })();
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<a name="22回到页面顶部"></a><h3>回到页面顶部</h3>
+  <div class="demo">
+    <div class="demo-header">
+      <span class="demo-label">演示</span>
+      <span class="demo-label">代码</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-panel demo-stage">
+        效果请看页面右下角回到顶部按钮。
+<div class="gototop" id="gotoTop">
+  <div class="arrow"></div>
+</div>
+        <script>
+  new galaxy.GotoTop('#gotoTop', {
+    // duration: 2000,
+    // fadeDuration: 600
+  });
+</script>
+      </div>
+      <div class="demo-panel demo-code">
+      <pre class="hljs"><code>效果请看页面右下角回到顶部按钮。
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;gototop&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;gotoTop&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;arrow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">new</span> galaxy.GotoTop(<span class="hljs-string">&#x27;#gotoTop&#x27;</span>, {
+    <span class="hljs-comment">// duration: 2000,</span>
+    <span class="hljs-comment">// fadeDuration: 600</span>
+  });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+      </div>
+    </div>
+  </div>
+<script>
+  galaxy.utils.$$('.demo').forEach(function(demo) {
+    new galaxy.Tabs(demo, {
+      labels: '.demo-label',
+      panels: '.demo-panel',
+      triggerType: 'mousedown',
+      duration: 50
+    });
+  });
+</script>
+
+<a name="23接口文档"></a><h2>接口文档</h2>
+<a name="24Carousel"></a><h3>Carousel</h3><a name="25配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>wrapper</td>
+                <td>".galaxy-wrapper"</td>
+                <td>包裹容器</td>
+              </tr><tr>
+                <td>slideList</td>
+                <td>null</td>
+                <td>默认获取wrapper的子元素作为滑块，如果滑块同级有其他元素，可直接指定滑块</td>
+              </tr><tr>
+                <td>effect</td>
+                <td>"fade"</td>
+                <td>滑块切换效果，可选：'fade', 'slide', 'deck'</td>
+              </tr><tr>
+                <td>instant</td>
+                <td>true</td>
+                <td>切换时，如果上一个动画还没有过渡完，立即完成上一次动画并开始新的动画。</td>
+              </tr><tr>
+                <td>resize</td>
+                <td>false</td>
+                <td>改变窗口大小时是否重新调整元素的尺寸</td>
+              </tr><tr>
+                <td>duration</td>
+                <td>500</td>
+                <td>滑块切换持续时间，单位毫秒</td>
+              </tr><tr>
+                <td>easing</td>
+                <td>"easeInOutQuad"</td>
+                <td>缓动公式</td>
+              </tr><tr>
+                <td>direction</td>
+                <td>"horizontal"</td>
+                <td>滑块切换的轴线，可选：'horizontal', 'vertical'</td>
+              </tr><tr>
+                <td>activeClass</td>
+                <td>"galaxy-slide-active"</td>
+                <td>当前活动滑块添加的类名</td>
+              </tr><tr>
+                <td colspan="2">navigation {</td>
+                <td>前后按钮导航</td>
+              </tr>
+              <tr class="subparam">
+                    <td>prevEl</td>
+                    <td>null</td>
+                    <td>上一个按钮元素或选择器</td>
+                  </tr><tr class="subparam">
+                    <td>nextEl</td>
+                    <td>null</td>
+                    <td>下一个按钮元素或选择器</td>
+                  </tr><tr class="subparam">
+                    <td>triggerType</td>
+                    <td>"click"</td>
+                    <td>按钮触发滑块切换的事件类型，可选：'click', 'mousedown', 'mouseup'等鼠标事件</td>
+                  </tr><tr class="subparam">
+                    <td>triggerDelay</td>
+                    <td>150</td>
+                    <td>当triggerType为'mouseover'或'mouseenter'时，未避免不小心滑动导致频繁切换的延迟时间</td>
+                  </tr><tr class="subparam">
+                    <td>disabledIfEdge</td>
+                    <td>false</td>
+                    <td>到达边缘是否禁止切换</td>
+                  </tr><tr class="subparam">
+                    <td>disabledClass</td>
+                    <td>"galaxy-button-disabled"</td>
+                    <td>disabledIfEdge为true情况下，到达边缘时添加的类名</td>
+                  </tr><tr class="subparam">
+                    <td>disabledClass</td>
+                    <td>"galaxy-button-disabled"</td>
+                    <td>disabledIfEdge为true情况下，到达边缘时添加的类名</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">pagination {</td>
+                <td>分页</td>
+              </tr>
+              <tr class="subparam">
+                    <td>type</td>
+                    <td>"bullets"</td>
+                    <td>分页类型，可选：'bullets', 'fraction', 'custom'</td>
+                  </tr><tr class="subparam">
+                    <td>triggerType</td>
+                    <td>"click"</td>
+                    <td>bullets触发滑块切换的事件类型，可选：'click', 'mouseover', 'mouseenter', 'mousedown', 'mouseup'等鼠标事件，也可传入false来不让bullets控制切换滑块</td>
+                  </tr><tr class="subparam">
+                    <td>triggerDelay</td>
+                    <td>150</td>
+                    <td>当triggerType为mouseover'或'mouseenter'时，未避免不小心滑动导致频繁切换的延迟时间</td>
+                  </tr><tr class="subparam">
+                    <td>autoPaging</td>
+                    <td>true</td>
+                    <td>是否自动分页，如果基于现有的DOM作为分页项，可设为false，并使用el选项指定分页项。</td>
+                  </tr><tr class="subparam">
+                    <td>bulletEl</td>
+                    <td>null</td>
+                    <td>用于非自动分页指定bullets元素</td>
+                  </tr><tr class="subparam">
+                    <td>renderBullets</td>
+                    <td>function(index, bulletClass) {
+            return '<span class="${bulletClass}"></span>';
+          }</td>
+                    <td>自定义bullets的渲染</td>
+                  </tr><tr class="subparam">
+                    <td>renderFraction</td>
+                    <td>function(currentClass, totalClass) {
+            return '<span class="${currentClass}"></span> / <span class="${totalClass}"></span>';
+          }</td>
+                    <td>自定义bullets的渲染</td>
+                  </tr><tr class="subparam">
+                    <td>自定义fraction的渲染</td>
+                    <td>function(host, current, total) {
+            return current + ' / ' + total;
+          }</td>
+                    <td>自定义渲染</td>
+                  </tr><tr class="subparam">
+                    <td>bulletClass</td>
+                    <td>"galaxy-pagination-bullet"</td>
+                    <td>bullet类名</td>
+                  </tr><tr class="subparam">
+                    <td>bulletActiveClass</td>
+                    <td>"galaxy-pagination-bullet-active"</td>
+                    <td>活动的bullet类名</td>
+                  </tr><tr class="subparam">
+                    <td>currentClass</td>
+                    <td>"galaxy-pagination-current"</td>
+                    <td>fraction类型下current类名</td>
+                  </tr><tr class="subparam">
+                    <td>totalClass</td>
+                    <td>"galaxy-pagination-total"</td>
+                    <td>fraction类型下total类名</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">autoplay {</td>
+                <td>自动播放</td>
+              </tr>
+              <tr class="subparam">
+                    <td>enabled</td>
+                    <td>false</td>
+                    <td>是否启用</td>
+                  </tr><tr class="subparam">
+                    <td>delay</td>
+                    <td>3000</td>
+                    <td>切换到下一滑块的间隔时间</td>
+                  </tr><tr class="subparam">
+                    <td>progress</td>
+                    <td>null</td>
+                    <td>可配置一个接收delay进度的函数</td>
+                  </tr><tr class="subparam">
+                    <td>interval</td>
+                    <td>16.667</td>
+                    <td>触发progress函数的时间间隔</td>
+                  </tr><tr class="subparam">
+                    <td>hoverPause</td>
+                    <td>true</td>
+                    <td>鼠标移上el是否暂停自动播放</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">effectFade {</td>
+                <td>淡入淡出效果</td>
+              </tr>
+              <tr class="subparam">
+                    <td>fadeInDuration</td>
+                    <td>null</td>
+                    <td>淡入的时间，默认为duration</td>
+                  </tr><tr class="subparam">
+                    <td>fadeOutDuration</td>
+                    <td>null</td>
+                    <td>淡出的时间，默认为duration</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">effectSlide {</td>
+                <td>滑动效果</td>
+              </tr>
+              <tr class="subparam">
+                    <td>loop</td>
+                    <td>false</td>
+                    <td>是否循环切换</td>
+                  </tr><tr class="subparam">
+                    <td>visibleSlides</td>
+                    <td>1</td>
+                    <td>可视滑块个数</td>
+                  </tr><tr class="subparam">
+                    <td>scrolledSlides</td>
+                    <td>1</td>
+                    <td>每次滚动的滑块数，不大于可视滑块数</td>
+                  </tr><tr class="subparam">
+                    <td>clonedSlides</td>
+                    <td>0</td>
+                    <td>前后克隆的滑块数，默认和可视滑块数相同，不可小于可视滑块数</td>
+                  </tr><tr class="subparam">
+                    <td>slideIndexAttrName</td>
+                    <td>"data-galaxy-slide-index"</td>
+                    <td>滑块下标值对应的元素属性名，用于loop模式下</td>
+                  </tr><tr class="subparam">
+                    <td>clonedSlideClass</td>
+                    <td>"galaxy-cloned-slide"</td>
+                    <td>克隆滑块的类名，用于loop模式下</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">effectStack {</td>
+                <td>堆叠效果</td>
+              </tr>
+              <tr class="subparam">
+                    <td>loop</td>
+                    <td>false</td>
+                    <td>是否循环切换</td>
+                  </tr><tr class="subparam">
+                    <td>layer</td>
+                    <td>2</td>
+                    <td>堆叠的层数，最少两层</td>
+                  </tr><tr class="subparam">
+                    <td>scale</td>
+                    <td>-0.12</td>
+                    <td>逐层缩小比率</td>
+                  </tr><tr class="subparam">
+                    <td>scaleEasing</td>
+                    <td>"linear"</td>
+                    <td>缩放交错动画的滑动公式</td>
+                  </tr><tr class="subparam">
+                    <td>changeZIndex</td>
+                    <td>"after"</td>
+                    <td>在动画开始之前或动画结束之后改变层级，可选: 'before', 'after'</td>
+                  </tr><tr class="subparam">
+                    <td>focusWidth</td>
+                    <td>null</td>
+                    <td>焦点滑块的宽度</td>
+                  </tr><tr class="subparam">
+                    <td>focusHeight</td>
+                    <td>null</td>
+                    <td>焦点滑块的高度</td>
+                  </tr><tr class="subparam">
+                    <td>align</td>
+                    <td>"center"</td>
+                    <td>层的对齐方式，可选：'start', 'center', 'end'</td>
+                  </tr><tr class="subparam">
+                    <td>visibleSlideIndexAttrName</td>
+                    <td>"data-visible-slide-index"</td>
+                    <td>保存滑块下标属性的键名，左边隐藏的滑块对应值都为0，从左往右可见滑块值递增，右边隐藏滑块值都为可见滑块数加1</td>
+                  </tr><tr class="subparam">
+                    <td>slideIndexAttrName</td>
+                    <td>"data-galaxy-slide-index"</td>
+                    <td>滑块下标值对应的元素属性名，用于loop模式下</td>
+                  </tr><tr class="subparam">
+                    <td>clonedSlideClass</td>
+                    <td>"galaxy-cloned-slide"</td>
+                    <td>克隆滑块的类名，用于loop模式下</td>
+                  </tr><tr class="subparam">
+                    <td>switchBySlide</td>
+                    <td>true</td>
+                    <td>是否可通过操作滑块进行切换</td>
+                  </tr><tr class="subparam">
+                    <td>triggerType</td>
+                    <td>"click"</td>
+                    <td>通过操作滑块进行切换的事件类型</td>
+                  </tr><tr class="subparam">
+                    <td>triggerDelay</td>
+                    <td>150</td>
+                    <td>当triggerType为'mouseover'或'mouseenter'时，未避免不小心滑动导致频繁切换的延迟时间</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr><tr>
+                <td colspan="2">effectDeck {</td>
+                <td>牌组效果</td>
+              </tr>
+              <tr class="subparam">
+                    <td>type</td>
+                    <td>"draw"</td>
+                    <td>牌组类型，可选：'draw' - 抽取、'cover' - 覆盖</td>
+                  </tr><tr class="subparam">
+                    <td>prevEasing</td>
+                    <td>""</td>
+                    <td>切换到上一个滑块的滑动公式，默认等同于easing</td>
+                  </tr><tr class="subparam">
+                    <td>nextEasing</td>
+                    <td>""</td>
+                    <td>切换到下一个滑块的滑动公式，默认等同于easing</td>
+                  </tr><tr class="subparam">
+                    <td>prevDuration</td>
+                    <td>null</td>
+                    <td>切换到上一个滑块的时间，默认等同于duration</td>
+                  </tr><tr class="subparam">
+                    <td>nextDuration</td>
+                    <td>null</td>
+                    <td>切换到下一个滑块的时间，默认等同于duration</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="26方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr><tr>
+                <td>goto(index)</td>
+                <td>切换到指定下标滑块</td>
+              </tr><tr>
+                <td>gotoNext()</td>
+                <td>切换到下一滑块</td>
+              </tr><tr>
+                <td>gotoNext()</td>
+                <td>切换到下一滑块</td>
+              </tr><tr>
+                <td>gotoPrev()</td>
+                <td>切换到上一滑块</td>
+              </tr><tr>
+                <td>gotoFirst()</td>
+                <td>切换到第一个滑块</td>
+              </tr><tr>
+                <td>gotoLast()</td>
+                <td>切换到最后一个滑块</td>
+              </tr>
+        </tbody>
+      </table>
+    </div><a name="27属性"></a><h4>属性</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>属性名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>el</td>
+                <td>容器元素</td>
+              </tr><tr>
+                <td>params</td>
+                <td>合并后的配置选项</td>
+              </tr><tr>
+                <td>passedParams</td>
+                <td>传递的配置选项</td>
+              </tr><tr>
+                <td>wrapper</td>
+                <td>包裹元素</td>
+              </tr><tr>
+                <td>slideList</td>
+                <td>滑块元素列表</td>
+              </tr><tr>
+                <td>width</td>
+                <td>容器元素宽度</td>
+              </tr><tr>
+                <td>height</td>
+                <td>容器元素高度</td>
+              </tr><tr>
+                <td>pages</td>
+                <td>页码数</td>
+              </tr><tr>
+                <td>activeIndex</td>
+                <td>活动滑块下标</td>
+              </tr><tr>
+                <td>transitional</td>
+                <td>是否处于过渡期</td>
+              </tr><tr>
+                <td>previousActiveIndex</td>
+                <td>上一次活动滑块下标</td>
+              </tr><tr>
+                <td>switchType</td>
+                <td>切换类型，点击下一页按钮或调用下一页方法时值为'next'，点击上一页按钮或调用上一页方法时值为'prev'，否则为undefined</td>
+              </tr><tr>
+                <td>lastToFirst</td>
+                <td>是否从最后一个滑块切换到第一个滑块</td>
+              </tr><tr>
+                <td>firstToLast</td>
+                <td>是否从第一个滑块切换到最后一个滑块</td>
+              </tr>
+        </tbody>
+      </table>
+    </div><a name="28事件"></a><h4>事件</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>事件名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init(instance)</td>
+                <td>初始化后触发</td>
+              </tr><tr>
+                <td>destroy(instance)</td>
+                <td>实例销毁后触发</td>
+              </tr><tr>
+                <td>resize(instance)</td>
+                <td>窗口大小调整时执行</td>
+              </tr><tr>
+                <td>sizeChange(instance)</td>
+                <td>容器元素大小变化时触发</td>
+              </tr><tr>
+                <td>activeIndexChange(instance)</td>
+                <td>活动滑块下标改变时触发</td>
+              </tr><tr>
+                <td>transitionStart(instance)</td>
+                <td>过渡开始时触发</td>
+              </tr><tr>
+                <td>transitionEnd(instance)</td>
+                <td>过渡结束时触发</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="29Marquee"></a><h3>Marquee</h3><a name="30配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>interval</td>
+                <td>20</td>
+                <td>每一次位移的时间间隔</td>
+              </tr><tr>
+                <td>downInterval</td>
+                <td>5</td>
+                <td>鼠标按下时的interval值</td>
+              </tr><tr>
+                <td>offset</td>
+                <td>1</td>
+                <td>wrapper每一次位移的偏移量，单位px</td>
+              </tr><tr>
+                <td>downOffset</td>
+                <td>null</td>
+                <td>鼠标按下时的offset值，如果不设置，默认等同于offset</td>
+              </tr><tr>
+                <td>direction</td>
+                <td>"vertical"</td>
+                <td>运动方向，可选'vertical', 'horizontal'</td>
+              </tr><tr>
+                <td>translate</td>
+                <td>0</td>
+                <td>初始化时的位移</td>
+              </tr><tr>
+                <td>hoverPause</td>
+                <td>true</td>
+                <td>鼠标移上el是否停止</td>
+              </tr><tr>
+                <td colspan="2">navigation {</td>
+                <td>前后按钮导航</td>
+              </tr>
+              <tr class="subparam">
+                    <td>prevEl</td>
+                    <td>null</td>
+                    <td>上一个按钮元素或选择器</td>
+                  </tr><tr class="subparam">
+                    <td>nextEl</td>
+                    <td>null</td>
+                    <td>下一个按钮元素或选择器</td>
+                  </tr><tr class="subparam">
+                    <td>downClass</td>
+                    <td>"galaxy-button-down"</td>
+                    <td>鼠标按下时添加到按钮元素上的类名</td>
+                  </tr>
+              <tr>
+                <td colspan="3">}</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="31方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr><tr>
+                <td>translateTo(value)</td>
+                <td>移动到指定位置</td>
+              </tr>
+        </tbody>
+      </table>
+    </div><a name="32属性"></a><h4>属性</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>属性名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>el</td>
+                <td>容器元素</td>
+              </tr><tr>
+                <td>params</td>
+                <td>合并后的配置选项</td>
+              </tr><tr>
+                <td>passedParams</td>
+                <td>传递的配置选项</td>
+              </tr><tr>
+                <td>wrapper</td>
+                <td>包裹元素</td>
+              </tr><tr>
+                <td>slideList</td>
+                <td>滑块元素列表</td>
+              </tr><tr>
+                <td>translate</td>
+                <td>移动的距离</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="33Accordion"></a><h3>Accordion</h3><a name="34配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>labels</td>
+                <td>null</td>
+                <td>标签元素或选择器</td>
+              </tr><tr>
+                <td>panels</td>
+                <td>null</td>
+                <td>面板元素或选择器</td>
+              </tr><tr>
+                <td>multiple</td>
+                <td>false</td>
+                <td>是否可以打开多个</td>
+              </tr><tr>
+                <td>atLeastOne</td>
+                <td>true</td>
+                <td>当multiple为false时使用，至少要有一个显示，默认显示下标为activeIndex的panel</td>
+              </tr><tr>
+                <td>instant</td>
+                <td>true</td>
+                <td>切换时，如果上一个动画还没有过渡完，立即完成上一次动画并开始新的动画。</td>
+              </tr><tr>
+                <td>triggerType</td>
+                <td>"click"</td>
+                <td>labels触发事件的类型：可选'click', 'mouseenter'</td>
+              </tr><tr>
+                <td>triggerDelay</td>
+                <td>150</td>
+                <td>当triggerType为'mouseenter'时，为避免无意间滑动鼠标导致展开折叠</td>
+              </tr><tr>
+                <td>duration</td>
+                <td>300</td>
+                <td>滑块切换持续时间，单位毫秒</td>
+              </tr><tr>
+                <td>easing</td>
+                <td>"easeInOutQuad"</td>
+                <td>缓动公式</td>
+              </tr><tr>
+                <td>activeIndex</td>
+                <td>0</td>
+                <td>默认活动滑块的下标</td>
+              </tr><tr>
+                <td>direction</td>
+                <td>"vertical"</td>
+                <td>滑块切换的轴线，可选：'horizontal', 'vertical'</td>
+              </tr><tr>
+                <td>labelActiveClass</td>
+                <td>"galaxy-label-active"</td>
+                <td>当前活动的标签元素添加的类名</td>
+              </tr><tr>
+                <td>panelActiveClass</td>
+                <td>"galaxy-panel-active"</td>
+                <td>当前活动的面板元素添加的类名</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="35方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr><tr>
+                <td>show(index)</td>
+                <td>显示指定下标的面板</td>
+              </tr><tr>
+                <td>hide()</td>
+                <td>隐藏指定下标的面板</td>
+              </tr><tr>
+                <td>toggle(index)</td>
+                <td>显示/隐藏指定下标的面板</td>
+              </tr><tr>
+                <td>showAll()</td>
+                <td>显示所有面板</td>
+              </tr><tr>
+                <td>hideAll()</td>
+                <td>隐藏所有面板</td>
+              </tr><tr>
+                <td>onlyShow(index)</td>
+                <td>显示指定下标的面板，隐藏其他所有面板</td>
+              </tr><tr>
+                <td>onlyHide(index)</td>
+                <td>隐藏指定下标的面板，显示其他所有面板</td>
+              </tr><tr>
+                <td>hideOthersAndToggle(index)</td>
+                <td>显示/隐藏指定下标的面板，隐藏其他所有面板</td>
+              </tr><tr>
+                <td>showOthersAndToggle(index)</td>
+                <td>显示/隐藏指定下标的面板，显示其他所有面板</td>
+              </tr>
+        </tbody>
+      </table>
+    </div><a name="36属性"></a><h4>属性</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>属性名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>el</td>
+                <td>容器元素</td>
+              </tr><tr>
+                <td>params</td>
+                <td>合并后的配置选项</td>
+              </tr><tr>
+                <td>passedParams</td>
+                <td>传递的配置选项</td>
+              </tr><tr>
+                <td>labels</td>
+                <td>标签元素</td>
+              </tr><tr>
+                <td>panels</td>
+                <td>面板元素</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="37GotoTop"></a><h3>GotoTop</h3><a name="38配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>togglePoint</td>
+                <td>600</td>
+                <td>隐藏和显示的临界点高度，单位像素</td>
+              </tr><tr>
+                <td>duration</td>
+                <td>400</td>
+                <td>滚到顶部需要的时间</td>
+              </tr><tr>
+                <td>fadeDuration</td>
+                <td>300</td>
+                <td>el淡入淡出需要的时间</td>
+              </tr><tr>
+                <td>threshold</td>
+                <td>25</td>
+                <td>触发滚动事件的阈值</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="39方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="40Menu"></a><h3>Menu</h3><a name="41配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>menuItems</td>
+                <td>null</td>
+                <td>菜单项元素或选择器</td>
+              </tr><tr>
+                <td>subMenu</td>
+                <td>null</td>
+                <td>子菜单元素或选择器</td>
+              </tr><tr>
+                <td>effect</td>
+                <td>"fade"</td>
+                <td>菜单项显示/隐藏效果，可选'fade', slide'</td>
+              </tr><tr>
+                <td>activeClass</td>
+                <td>"galaxy-menu-item-active"</td>
+                <td>当前活动菜单项添加的类名</td>
+              </tr><tr>
+                <td>duration</td>
+                <td>300</td>
+                <td>切换持续时间，单位毫秒</td>
+              </tr><tr>
+                <td>showDelay</td>
+                <td>50</td>
+                <td>延迟显示的时间，单位毫秒，为避免短时间类重复多次切换菜单</td>
+              </tr><tr>
+                <td>hideDelay</td>
+                <td>50</td>
+                <td>延迟隐藏的时间，单位毫秒，可在彻底隐藏前把鼠标移到菜单项上阻止隐藏</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="42方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="43ScrollFixed"></a><h3>ScrollFixed</h3><a name="44配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>fixedBox</td>
+                <td>null</td>
+                <td>用于固定的盒子，默认为el的第一个子元素</td>
+              </tr><tr>
+                <td>fixedClass</td>
+                <td>"galaxy-fixed"</td>
+                <td>fixedBox被固定时添加的类名</td>
+              </tr><tr>
+                <td>scrollBox</td>
+                <td>window</td>
+                <td>被监听滚动的盒子</td>
+              </tr><tr>
+                <td>offsetTop</td>
+                <td>1</td>
+                <td>偏移顶部距离，默认值为1是为避免有些浏览器定位到hash时，元素与浏览器顶部仍然有一个像素的距离导致无法切换</td>
+              </tr><tr>
+                <td>threshold</td>
+                <td>25</td>
+                <td>触发滚动事件的阈值</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="45方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="46ScrollSpy"></a><h3>ScrollSpy</h3><a name="47配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>labels</td>
+                <td>null</td>
+                <td>标签元素或选择器</td>
+              </tr><tr>
+                <td>scrollBox</td>
+                <td>window</td>
+                <td>被监听滚动的盒子</td>
+              </tr><tr>
+                <td>offsetTop</td>
+                <td>1</td>
+                <td>偏移顶部距离，默认值为1是为避免有些浏览器定位到hash时，元素与浏览器顶部仍然有一个像素的距离导致无法切换</td>
+              </tr><tr>
+                <td>threshold</td>
+                <td>25</td>
+                <td>触发滚动事件的阈值</td>
+              </tr><tr>
+                <td>activeClass</td>
+                <td>"galaxy-label-active"</td>
+                <td>当前活动的标签元素添加的类名</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="48方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+<a name="49Tabs"></a><h3>Tabs</h3><a name="50配置选项"></a><h4>配置选项</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>参数</th>
+          <th>默认值</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+                <td>init</td>
+                <td>true</td>
+                <td>实例化后是否立即初始化</td>
+              </tr><tr>
+                <td>labels</td>
+                <td>null</td>
+                <td>标签元素或选择器</td>
+              </tr><tr>
+                <td>panels</td>
+                <td>null</td>
+                <td>面板元素或选择器</td>
+              </tr><tr>
+                <td>instant</td>
+                <td>true</td>
+                <td>切换时，如果上一个动画还没有过渡完，立即完成上一次动画并开始新的动画。</td>
+              </tr><tr>
+                <td>triggerType</td>
+                <td>"click"</td>
+                <td>labels触发事件的类型：可选'click', 'mouseenter'</td>
+              </tr><tr>
+                <td>triggerDelay</td>
+                <td>150</td>
+                <td>当triggerType为'mouseenter'时，为避免无意间滑动鼠标导致展开折叠</td>
+              </tr><tr>
+                <td>duration</td>
+                <td>300</td>
+                <td>滑块切换持续时间，单位毫秒</td>
+              </tr><tr>
+                <td>easing</td>
+                <td>"easeInOutQuad"</td>
+                <td>缓动公式</td>
+              </tr><tr>
+                <td>activeIndex</td>
+                <td>0</td>
+                <td>默认活动滑块的下标</td>
+              </tr><tr>
+                <td>labelActiveClass</td>
+                <td>"galaxy-label-active"</td>
+                <td>当前活动的标签元素添加的类名</td>
+              </tr><tr>
+                <td>panelActiveClass</td>
+                <td>"galaxy-panel-active"</td>
+                <td>当前活动的面板元素添加的类名</td>
+              </tr>
+      </tbody>
+    </table>
+  </div><a name="51方法"></a><h4>方法</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>方法名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>init()</td>
+                <td>初始化实例</td>
+              </tr><tr>
+                <td>destroy()</td>
+                <td>销毁实例</td>
+              </tr><tr>
+                <td>goto(index)</td>
+                <td>切换到指定下标的面板</td>
+              </tr>
+        </tbody>
+      </table>
+    </div><a name="52属性"></a><h4>属性</h4>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>属性名</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>el</td>
+                <td>容器元素</td>
+              </tr><tr>
+                <td>params</td>
+                <td>合并后的配置选项</td>
+              </tr><tr>
+                <td>passedParams</td>
+                <td>传递的配置选项</td>
+              </tr><tr>
+                <td>labels</td>
+                <td>标签元素</td>
+              </tr><tr>
+                <td>panels</td>
+                <td>面板元素</td>
+              </tr><tr>
+                <td>activeIndex</td>
+                <td>当前活动的面板的下标</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+      </div>
+    </main>
+
+    <div class="mask"></div>
+
+    <footer></footer>
+  </body>
+</html>
